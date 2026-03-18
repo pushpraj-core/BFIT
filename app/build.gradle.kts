@@ -31,6 +31,9 @@ android {
         val geminiApiKey = localProperties.getProperty("gemini.apiKey", "YOUR_API_KEY")
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
 
+        val clerkKey = localProperties.getProperty("clerk.publishableKey", "YOUR_CLERK_KEY")
+        buildConfigField("String", "CLERK_PUBLISHABLE_KEY", "\"$clerkKey\"")
+
         // Default Web Client ID for Google Sign-In
         val webClientId = localProperties.getProperty("google.webClientId", "YOUR_WEB_CLIENT_ID")
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$webClientId\"")
@@ -69,10 +72,13 @@ dependencies {
 
     // Firebase BOM (manages all Firebase versions)
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
 
-    // Google Sign-In
+    // Clerk Authentication
+    implementation("com.clerk:clerk-android-api:0.1.0") // Core API
+    implementation("com.clerk:clerk-android-ui:0.1.0")  // UI components (optional)
+
+    // Google Sign-In (Still useful for Clerk's OAuth)
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // ML Kit Barcode Scanning

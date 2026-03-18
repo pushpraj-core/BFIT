@@ -55,32 +55,30 @@ Access top-tier supplements with ease:
 
 ---
 
-## 🚀 Getting Started
-
-To get BFIT up and running locally, follow these simple steps:
+## 🚀 Instant Setup (The Best Alternative)
+To simplify the "Getting Started" process, we've enabled **Clerk Authentication**. Instead of setting up a unique Firebase project per developer, simply use a shared **Clerk Publishable Key**.
 
 1. **Clone the project**:
    ```bash
    git clone https://github.com/pushpraj20062006-max/BFIT.git
    ```
 
-2. **Setup Firebase**:
-   - Go to the [Firebase Console](https://console.firebase.google.com/).
-   - Add a new Android project with the package name `com.example.bfit`.
-   - Download `google-services.json` and place it in the `app/` directory.
-
-3. **Configure API Keys**:
-   Add your keys to `local.properties`:
+2. **Configure API Key (No JSON required)**:
+   Add your Clerk key to `local.properties`:
    ```properties
-   apiKey=YOUR_FIREBASE_API_KEY
+   clerk.publishableKey=pk_test_... # Ask the owner for the shared key
    gemini.apiKey=YOUR_GEMINI_PRO_API_KEY
-   google.webClientId=YOUR_GOOGLE_SIGN_IN_WEB_CLIENT_ID
    ```
 
-4. **Build and Run**:
-   Sync Gradle and run the app on an emulator or physical device!
+3. **Build and Run**:
+   Sync Gradle and run the app. Use **"Try Demo Mode"** on the login screen to jump in instantly with mock data!
 
 ---
+
+## 🏗️ Technical Setup (Individual Developers)
+If you prefer to use your own backend for testing:
+1. **Clerk setup**: Enable Native API in your Clerk Dashboard and get your Publishable Key.
+2. **Firebase setup**: Only required if using Firestore sync features (download `google-services.json`).
 
 ## 📸 Glimpse of the App
 
