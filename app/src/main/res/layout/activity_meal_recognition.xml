@@ -47,7 +47,7 @@
                         android:layout_height="220dp"
                         android:adjustViewBounds="true"
                         android:background="@color/bfit_surface_soft"
-                        android:contentDescription="Selected meal image"
+                        android:contentDescription="@string/selected_meal_image_cd"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_baseline_restaurant_24" />
 
@@ -72,7 +72,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Select Meal Photo" />
+                            android:text="@string/select_meal_photo" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/retakeImageButton"
@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
                         android:minHeight="@dimen/touch_target_min"
-                        android:text="Analyze Meal" />
+                        android:text="@string/analyze_meal" />
 
                     <ProgressBar
                         android:id="@+id/analyzeProgress"
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
-                        android:text="Confidence: --"
+                        android:text="@string/confidence_placeholder"
                         app:chipBackgroundColor="@color/bfit_secondary_container" />
 
                     <TextView
@@ -115,7 +115,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
-                        android:text="No analysis yet"
+                        android:text="@string/no_analysis_yet"
                         android:textAppearance="?attr/textAppearanceBodyLarge" />
 
                     <TextView
@@ -125,19 +125,25 @@
                         android:text="@string/estimated_macros"
                         android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-                    <LinearLayout
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:fillViewport="true"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
 
                         <TextView
                             android:id="@+id/proteinMacroText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Protein: --"
+                            android:text="@string/macro_protein_placeholder"
                             android:textColor="@color/bfit_success" />
 
                         <TextView
@@ -145,7 +151,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Carbs: --"
+                            android:text="@string/macro_carbs_placeholder"
                             android:textColor="@color/bfit_warning" />
 
                         <TextView
@@ -153,9 +159,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Fats: --"
+                            android:text="@string/macro_fats_placeholder"
                             android:textColor="@color/bfit_danger" />
-                    </LinearLayout>
+                        </LinearLayout>
+                    </HorizontalScrollView>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/addToLogButton"

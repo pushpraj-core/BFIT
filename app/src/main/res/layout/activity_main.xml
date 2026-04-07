@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/space_md"
+            android:paddingBottom="96dp"
             android:gravity="center_horizontal">
 
             <RelativeLayout
@@ -48,8 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
                     android:gravity="center_horizontal"
                     tools:text="🔥 5 day streak" />
 
@@ -58,8 +58,7 @@
             <TextView
                 android:id="@+id/headerTitle"
                 android:text="@string/fitness_calorie_planner"
-                android:textSize="28sp"
-                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -154,7 +153,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/gender"
                             android:layout_marginBottom="8dp"
-                            android:textSize="16sp"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
                             android:textColor="?attr/colorOnSurface" />
 
                         <RadioGroup
@@ -303,7 +302,7 @@
                             android:src="@drawable/ic_baseline_monitor_weight_24"
                             android:layout_marginEnd="12dp"
                             app:tint="?attr/colorPrimary"
-                            android:contentDescription="BMI" />
+                            android:contentDescription="@string/bmi_icon_cd" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -485,7 +484,7 @@
                     style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="72dp">
+                    android:layout_marginBottom="@dimen/space_md"
 
                     <GridLayout
                         android:layout_width="match_parent"
@@ -572,11 +571,13 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/dashboardFabContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:orientation="vertical"
         android:layout_margin="16dp"
+        android:contentDescription="@string/dashboard_actions_cd"
         android:gravity="center_horizontal">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -585,7 +586,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:contentDescription="Add Custom Meal"
+            android:contentDescription="@string/add_custom_meal"
             app:srcCompat="@drawable/ic_baseline_restaurant_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

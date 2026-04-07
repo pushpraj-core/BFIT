@@ -29,12 +29,18 @@
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="@color/bfit_info" />
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_md"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.BFIT.Card"
@@ -119,7 +125,8 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/Widget.BFIT.Card"
@@ -137,7 +144,7 @@
                         android:id="@+id/completedDaysText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Days Completed: 0 / 7"
+                        android:text="@string/progress_days_completed_placeholder"
                         android:textStyle="bold" />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -153,28 +160,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
-                        android:text="Total Calories: 0 kcal" />
+                        android:text="@string/progress_total_calories_placeholder" />
 
                     <TextView
                         android:id="@+id/weeklyProteinText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
-                        android:text="Total Protein: 0 g" />
+                        android:text="@string/progress_total_protein_placeholder" />
 
                     <TextView
                         android:id="@+id/weeklyAverageText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
-                        android:text="Average: 0 kcal/day, 0 g/day" />
+                        android:text="@string/progress_average_placeholder" />
 
                     <TextView
                         android:id="@+id/loggedDaysText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
-                        android:text="Days with logs: 0" />
+                        android:text="@string/progress_days_logged_placeholder" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -193,7 +200,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Today's Weight (kg)">
+                        android:hint="@string/todays_weight_hint">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/weightInput"
@@ -209,14 +216,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
-                        android:text="Save Weight" />
+                        android:text="@string/save_weight" />
 
                     <TextView
                         android:id="@+id/latestWeightText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
-                        android:text="Latest Weight: --" />
+                        android:text="@string/latest_weight_placeholder" />
 
                     <TextView
                         android:id="@+id/noWeightDataText"
@@ -250,14 +257,14 @@
                             style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="7D" />
+                            android:text="@string/range_7d" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/range30dBtn"
                             style="@style/Widget.Material3.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30D" />
+                            android:text="@string/range_30d" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
                     <com.github.mikephil.charting.charts.LineChart

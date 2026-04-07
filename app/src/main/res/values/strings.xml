@@ -74,4 +74,25 @@
     <string name="macro_fats">Fats</string>
     <string name="add_to_daily_log">Add to Daily Log</string>
     <string name="meal_empty_state">No meal analyzed yet. Pick a photo to begin.</string>
+    <string name="todays_weight_hint">Today\'s Weight (kg)</string>
+    <string name="save_weight">Save Weight</string>
+    <string name="latest_weight_placeholder">Latest Weight: --</string>
+    <string name="progress_days_completed_placeholder">Days Completed: 0 / 7</string>
+    <string name="progress_total_calories_placeholder">Total Calories: 0 kcal</string>
+    <string name="progress_total_protein_placeholder">Total Protein: 0 g</string>
+    <string name="progress_average_placeholder">Average: 0 kcal/day, 0 g/day</string>
+    <string name="progress_days_logged_placeholder">Days with logs: 0</string>
+    <string name="range_7d">7D</string>
+    <string name="range_30d">30D</string>
+    <string name="select_meal_photo">Select Meal Photo</string>
+    <string name="analyze_meal">Analyze Meal</string>
+    <string name="confidence_placeholder">Confidence: --</string>
+    <string name="no_analysis_yet">No analysis yet</string>
+    <string name="macro_protein_placeholder">Protein: --</string>
+    <string name="macro_carbs_placeholder">Carbs: --</string>
+    <string name="macro_fats_placeholder">Fats: --</string>
+    <string name="selected_meal_image_cd">Selected meal image preview</string>
+    <string name="bmi_icon_cd">BMI summary</string>
+    <string name="add_custom_meal">Add Custom Meal</string>
+    <string name="dashboard_actions_cd">Dashboard quick actions</string>
 </resources>
