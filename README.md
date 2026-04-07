@@ -4,7 +4,7 @@ BFIT is an Android fitness and nutrition assistant focused on practical daily tr
 
 ## Overview
 
-The app supports the complete day-to-day flow for a user:
+The application supports a complete day-to-day user flow:
 
 1. Create a plan based on body metrics and goal.
 2. Track meals and nutrition using barcode scan or manual additions.
@@ -93,6 +93,8 @@ BFIT-master/
 
 ### 1. Clone
 
+Repository clone and local workspace initialization:
+
 ```bash
 git clone https://github.com/pushpraj-core/BFIT.git
 cd BFIT
@@ -100,23 +102,25 @@ cd BFIT
 
 ### 2. Firebase Configuration
 
-1. Create or use a Firebase project.
-2. Add an Android app with package name:
+Firebase project configuration requires:
+
+1. A Firebase project (new or existing).
+2. An Android app registration with package name:
 
     `com.example.bfit`
 
-3. Download `google-services.json` and place it at:
+3. Placement of `google-services.json` at:
 
     `app/google-services.json`
 
-4. Enable providers used by the app:
+4. Enablement of required Firebase providers:
 
 - Authentication (Email/Password and Google)
 - Firestore Database
 
 ### 3. Configure local.properties
 
-Add these keys to your root `local.properties`:
+The root `local.properties` file includes:
 
 ```properties
 # OpenFoodFacts / app API key placeholder used by BuildConfig.API_KEY
@@ -131,14 +135,14 @@ google.webClientId=YOUR_WEB_CLIENT_ID
 
 ### 4. Build and Run
 
-Windows:
+Windows commands:
 
 ```powershell
 ./gradlew.bat assembleDebug
 ./gradlew.bat installDebug
 ```
 
-macOS/Linux:
+macOS/Linux commands:
 
 ```bash
 ./gradlew assembleDebug
@@ -147,7 +151,7 @@ macOS/Linux:
 
 ## Optional Web Module
 
-The repository also contains `bfit-web`, a Vite + TypeScript module.
+The repository includes an optional `bfit-web` module based on Vite + TypeScript.
 
 ```bash
 cd bfit-web
@@ -173,11 +177,11 @@ This repository includes GitHub Actions workflows for quality enforcement and re
 
 ### Recommended Branch Protection
 
-Enable branch protection for `master` and require CI status checks before merge.
+Branch protection for `master` with required CI status checks is recommended.
 
 ## GitHub Release Setup
 
-For signed release builds in GitHub Actions, add these repository secrets:
+Signed release builds in GitHub Actions use the following repository secrets:
 
 - `API_KEY`
 - `GEMINI_API_KEY`
@@ -188,14 +192,14 @@ For signed release builds in GitHub Actions, add these repository secrets:
 - `ANDROID_KEY_ALIAS`
 - `ANDROID_KEY_PASSWORD`
 
-To publish a release:
+Release publishing is triggered by pushing a version tag:
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-GitHub Actions will generate and attach the APK to the release.
+GitHub Actions generates and attaches the APK artifact to the release.
 
 ## Data and Architecture Notes
 
@@ -215,7 +219,7 @@ GitHub Actions will generate and attach the APK to the release.
 
 ## Testing and Validation Checklist
 
-Before release or demo, verify:
+Before release or demo, validation typically covers:
 
 1. Login flow (email/password, Google, demo mode).
 2. Planner generation and daily log updates.
@@ -227,23 +231,20 @@ Before release or demo, verify:
 ## Troubleshooting
 
 - Build fails with Java-related error:
-   Ensure JDK 17 is installed and configured in Android Studio and `JAVA_HOME`.
+   JDK 17 should be installed and configured in Android Studio with a valid `JAVA_HOME`.
 
 - Google sign-in fails:
-   Confirm `google.webClientId` and SHA fingerprints are correctly set in Firebase.
+   `google.webClientId` and SHA fingerprints should match Firebase configuration.
 
 - Firestore reads/writes fail:
-   Verify Firestore is enabled and security rules allow your test user context.
+   Firestore enablement and security rules should allow the active test user context.
 
 - Gemini responses fail:
-   Confirm `gemini.apiKey` is valid and has required API access.
+   `gemini.apiKey` should be valid with required API access.
 
 ## Contribution
 
-1. Create a feature branch.
-2. Keep commits focused and descriptive.
-3. Run build checks before opening a pull request.
-4. Include screenshots for UI changes.
+Contribution expectations are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
