@@ -316,6 +316,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        val aiMealBtn = dashboardView.findViewById<Button>(R.id.aiMealBtn)
+        aiMealBtn.setOnClickListener {
+            startActivity(Intent(this, MealRecognitionActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         // Grocery List button
         val groceryBtn = dashboardView.findViewById<Button>(R.id.groceryBtn)
         groceryBtn.setOnClickListener {
