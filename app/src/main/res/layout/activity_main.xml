@@ -479,7 +479,7 @@
                     <GridLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:columnCount="2"
+                        android:columnCount="3"
                         android:padding="8dp"
                         android:useDefaultMargins="true">
 
@@ -506,12 +506,12 @@
                             app:cornerRadius="12dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/logoutBtn"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:id="@+id/groceryBtn"
+                            style="@style/Widget.Material3.Button.TonalButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
-                            android:text="@string/logout"
+                            android:text="@string/grocery_list"
                             app:cornerRadius="12dp" />
 
                         <com.google.android.material.button.MaterialButton
@@ -523,6 +523,15 @@
                             android:text="@string/scan_food"
                             app:icon="@drawable/ic_baseline_qr_code_scanner_24"
                             app:iconGravity="textStart"
+                            app:cornerRadius="12dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/logoutBtn"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="@string/logout"
                             app:cornerRadius="12dp" />
 
                     </GridLayout>

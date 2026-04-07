@@ -310,6 +310,19 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        // Grocery List button
+        val groceryBtn = dashboardView.findViewById<Button>(R.id.groceryBtn)
+        groceryBtn.setOnClickListener {
+            if (currentPlan != null) {
+                val intent = Intent(this, GroceryListActivity::class.java)
+                intent.putExtra("plan", currentPlan)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            } else {
+                Toast.makeText(this, "Generate a plan first!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         fabChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)

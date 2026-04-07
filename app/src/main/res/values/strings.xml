@@ -49,4 +49,6 @@
     <string name="no_purchase_history">No purchase history yet</string>
     <string name="mark_day_complete">Mark Day Complete ✓</string>
     <string name="profile">Profile</string>
+    <string name="grocery_list_title">Grocery List 🛒</string>
+    <string name="grocery_list">Groceries</string>
 </resources>

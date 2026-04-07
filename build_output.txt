@@ -1,179 +1,83 @@
-﻿> Task :app:clean
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+﻿Reusing configuration cache.
 > Task :app:preBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:processDebugGoogleServices UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
-> Task :app:dataBindingMergeDependencyArtifactsDebug
-> Task :app:generateDebugResValues
-> Task :app:generateDebugResources
-> Task :app:processDebugGoogleServices
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:dataBindingGenBaseClassesDebug UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kspDebugKotlin
 
-> Task :app:mergeDebugResources
-C:\Users\Pushp Raj\.gradle\caches\8.13\transforms\42474d902f5e0ef8468b67cb7e62afd6\transformed\appcompat-1.7.1\res\values\values.xml:207:4: Multiple substitutions specified in non-positional format of string resource string/scanned_food_calories. Did you mean to add the formatted="false" attribute?
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/ChatActivity.kt:33:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/ChatActivity.kt:99:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/ChatActivity.kt:100:15 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/ChatActivity.kt:101:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/GroceryListActivity.kt:37:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/GroceryListActivity.kt:73:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/GroceryListActivity.kt:74:15 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/GroceryListActivity.kt:75:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/GroceryListActivity.kt:248:46 Unchecked cast of 'Serializable?' to 'T (of fun <T : Serializable?> getSerializable)'.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/LoginActivity.kt:179:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:173:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:189:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:303:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:310:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:320:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:329:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:342:21 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/MainActivity.kt:361:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/PlannerActivity.kt:33:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/PlannerActivity.kt:128:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/PlannerActivity.kt:129:15 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/PlannerActivity.kt:130:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/PlannerActivity.kt:194:46 Unchecked cast of 'Serializable?' to 'T (of fun <T : Serializable?> getSerializable)'.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/ScannerActivity.kt:39:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/StoreActivity.kt:41:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/StoreActivity.kt:78:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/StoreActivity.kt:79:15 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
+w: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/app/src/main/java/com/example/bfit/StoreActivity.kt:80:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
 
-> Task :app:packageDebugResources
-> Task :app:generateDebugBuildConfig
-> Task :app:mapDebugSourceSetPaths
-> Task :app:checkDebugAarMetadata
-> Task :app:createDebugCompatibleScreenManifests
-> Task :app:extractDeepLinksDebug
-> Task :app:parseDebugLocalResources
-> Task :app:processDebugMainManifest
-> Task :app:dataBindingGenBaseClassesDebug
-> Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
-> Task :app:processDebugResources
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:assembleDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
 
-> Task :app:kspDebugKotlin FAILED
-.\gradlew.bat : e: file:///
-C:/Users/Pushp%20Raj/.gradl
-e/caches/8.13/transforms/57
-400a5c0cb12c95a112e6d486bf3
-49f/transformed/jetified-ko
-tlinx-serialization-json-jv
-m-1.9.0.jar!/META-INF/kotli
-nx-serialization-json.kotli
-n_module Module was 
-compiled with an 
-incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.2.0, 
-expected version is 2.0.0.
-At line:1 char:65
-+ ... \Android 
-Studio\jbr"; .\gradlew.bat 
-clean kspDebugKotlin 2>&1 
-| Out-F ...
-+                          
- ~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~
-    + CategoryInfo         
-     : NotSpecified: (e: 
-file    :///C:/U...rsion 
-is 2.0.    0.:String) [], 
-RemoteExc    eption
-    + 
-FullyQualifiedErrorId     
-: NativeCommandError
- 
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/a6c1912367f81466f8
-a960a26341cb6c/transformed/
-jetified-okio-jvm-3.16.4.ja
-r!/META-INF/okio.kotlin_mod
-ule Module was compiled 
-with an incompatible 
-version of Kotlin. The 
-binary version of its 
-metadata is 2.2.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/b55d95674645a112a9
-8fcc5b56f62ac0/transformed/
-jetified-clerk-android-api-
-1.0.1-api.jar!/META-INF/api
-_release.kotlin_module 
-Module was compiled with 
-an incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.3.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/c66d7f6f1bf6d637a9
-546045a8258dce/transformed/
-jetified-kotlin-stdlib-2.3.
-10.jar!/META-INF/kotlin-std
-lib-jdk7.kotlin_module 
-Module was compiled with 
-an incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.3.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/c66d7f6f1bf6d637a9
-546045a8258dce/transformed/
-jetified-kotlin-stdlib-2.3.
-10.jar!/META-INF/kotlin-std
-lib-jdk8.kotlin_module 
-Module was compiled with 
-an incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.3.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/c66d7f6f1bf6d637a9
-546045a8258dce/transformed/
-jetified-kotlin-stdlib-2.3.
-10.jar!/META-INF/kotlin-std
-lib.kotlin_module Module 
-was compiled with an 
-incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.3.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/d93e6468e317c43a59
-6a0a0b507b611f/transformed/
-jetified-okhttp-release-api
-.jar!/META-INF/okhttp.kotli
-n_module Module was 
-compiled with an 
-incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.2.0, 
-expected version is 2.0.0.
-e: file:///C:/Users/Pushp%2
-0Raj/.gradle/caches/8.13/tr
-ansforms/e4dda96096c6c9d272
-1bf0eb2ac12be0/transformed/
-jetified-kotlinx-serializat
-ion-core-jvm-1.9.0.jar!/MET
-A-INF/kotlinx-serialization
--core.kotlin_module Module 
-was compiled with an 
-incompatible version of 
-Kotlin. The binary version 
-of its metadata is 2.2.0, 
-expected version is 2.0.0.
-
-[Incubating] Problems report is available at: file:///C:/Users/Pushp%20Raj/OneDrive/Desktop/Pushpraj%202026/BFIT/BFIT-master/build/reports/problems/problems-report.html
-
-FAILURE: Build failed with 
-an exception.
-
-* What went wrong:
-Execution failed for task 
-':app:kspDebugKotlin'.
-> A failure occurred while 
-executing org.jetbrains.kot
-lin.compilerRunner.GradleCo
-mpilerRunnerWithWorkers$Gra
-dleKotlinCompilerWorkAction
-   > Compilation error. 
-See log for more details
-
-* Try:
-> Run with --stacktrace 
-option to get the stack 
-trace.
-> Run with --info or 
---debug option to get more 
-log output.
-> Run with --scan to get 
-full insights.
-> Get more help at 
-https://help.gradle.org.
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD FAILED in 26s
-19 actionable tasks: 19 executed
+BUILD SUCCESSFUL in 24s
+41 actionable tasks: 6 executed, 35 up-to-date
+Configuration cache entry reused.
