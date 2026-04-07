@@ -303,6 +303,14 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        val primaryActionBtn = dashboardView.findViewById<Button>(R.id.primaryActionBtn)
+        primaryActionBtn.setOnClickListener {
+            val intent = Intent(this, PlannerActivity::class.java)
+            intent.putExtra("plan", currentPlan)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         val storeBtn = dashboardView.findViewById<Button>(R.id.storeBtn)
         storeBtn.setOnClickListener {
             val intent = Intent(this, StoreActivity::class.java)

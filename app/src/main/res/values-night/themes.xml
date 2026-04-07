@@ -5,6 +5,9 @@
         <item name="colorPrimaryContainer">#381E72</item>
         <item name="colorSecondary">@color/bfit_secondary</item>
         <item name="colorSecondaryContainer">#633B48</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorSurfaceVariant">#1E1E1E</item>
+        <item name="colorOnSurface">#F3F4F6</item>
 
         <!-- Smooth Activity Transition Animations -->
         <item name="android:windowAnimationStyle">@style/BFITWindowAnimations</item>

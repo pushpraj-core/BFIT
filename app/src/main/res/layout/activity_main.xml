@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="@dimen/space_md"
             android:gravity="center_horizontal">
 
             <RelativeLayout
@@ -73,11 +73,10 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -139,11 +138,10 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="@dimen/space_lg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -283,13 +281,12 @@
                 <!-- BMI Result Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/bmiCard"
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
                     app:strokeColor="?attr/colorPrimary"
                     app:strokeWidth="1dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/space_md"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -345,11 +342,10 @@
 
                 <!-- Daily Summary Card -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -438,11 +434,10 @@
 
                 <!-- Today's Plan Card -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -468,24 +463,40 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Action Buttons — wrapped in GridLayout to prevent overflow -->
-                <com.google.android.material.card.MaterialCardView
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/primaryActionBtn"
+                    style="@style/Widget.BFIT.ActionButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
+                    android:text="@string/primary_action_todays_plan"
+                    app:icon="@drawable/ic_baseline_flag_24"
+                    app:iconGravity="textStart" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:text="@string/secondary_actions"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <!-- Action Buttons — wrapped in GridLayout to prevent overflow -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="72dp">
 
                     <GridLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:columnCount="3"
-                        android:padding="8dp"
+                        android:columnCount="2"
+                        android:padding="@dimen/space_xs"
                         android:useDefaultMargins="true">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/viewPlanBtn"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                            style="@style/Widget.BFIT.ActionButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -496,7 +507,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/storeBtn"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                            style="@style/Widget.BFIT.ActionButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -507,7 +518,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/groceryBtn"
-                            style="@style/Widget.Material3.Button.TonalButton"
+                            style="@style/Widget.BFIT.ActionButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"

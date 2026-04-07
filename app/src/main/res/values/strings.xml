@@ -53,4 +53,25 @@
     <string name="grocery_list">Groceries</string>
     <string name="weekly_progress">Weekly Progress</string>
     <string name="ai_meal_recognition">AI Meal</string>
+    <string name="primary_action_generate_plan">Generate Plan</string>
+    <string name="primary_action_todays_plan">Open Today\'s Plan</string>
+    <string name="secondary_actions">Quick Actions</string>
+    <string name="progress_title">Progress &amp; Insights</string>
+    <string name="weight_trend_subtitle">Track your trend and stay consistent</string>
+    <string name="kpi_current">Current</string>
+    <string name="kpi_change_7d">7D Change</string>
+    <string name="kpi_change_30d">30D Change</string>
+    <string name="no_weight_logs">No weight logs yet. Add your first entry.</string>
+    <string name="add_first_weight">Add First Weight</string>
+    <string name="goal_weight_label">Goal Weight</string>
+    <string name="meal_recognition_title">AI Meal Recognition</string>
+    <string name="meal_pick_hint">Choose a meal photo to estimate calories and macros.</string>
+    <string name="retake_photo">Choose Another Photo</string>
+    <string name="confidence_label">Confidence</string>
+    <string name="estimated_macros">Estimated Macros</string>
+    <string name="macro_protein">Protein</string>
+    <string name="macro_carbs">Carbs</string>
+    <string name="macro_fats">Fats</string>
+    <string name="add_to_daily_log">Add to Daily Log</string>
+    <string name="meal_empty_state">No meal analyzed yet. Pick a photo to begin.</string>
 </resources>
