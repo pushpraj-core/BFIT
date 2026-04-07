@@ -484,7 +484,7 @@
                     style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/space_md"
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <GridLayout
                         android:layout_width="match_parent"
@@ -530,7 +530,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
-                            android:text="@string/scan_food"
+                            android:text="@string/scan_food_unified"
                             app:icon="@drawable/ic_baseline_qr_code_scanner_24"
                             app:iconGravity="textStart"
                             app:cornerRadius="12dp" />
@@ -551,15 +551,6 @@
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
                             android:text="@string/weekly_progress"
-                            app:cornerRadius="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/aiMealBtn"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:text="@string/ai_meal_recognition"
                             app:cornerRadius="12dp" />
 
                     </GridLayout>

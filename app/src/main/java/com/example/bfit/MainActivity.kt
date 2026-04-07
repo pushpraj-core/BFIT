@@ -286,13 +286,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         scanBtn.setOnClickListener {
-            launchScanner()
+            showScanOptionsDialog()
         }
 
         // Dashboard scan button
         val scanDashBtn = dashboardView.findViewById<Button>(R.id.scanDashBtn)
         scanDashBtn.setOnClickListener {
-            launchScanner()
+            showScanOptionsDialog()
         }
 
         val viewPlanBtn = dashboardView.findViewById<Button>(R.id.viewPlanBtn)
@@ -321,12 +321,6 @@ class MainActivity : AppCompatActivity() {
         val progressBtn = dashboardView.findViewById<Button>(R.id.progressBtn)
         progressBtn.setOnClickListener {
             startActivity(Intent(this, ProgressActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        val aiMealBtn = dashboardView.findViewById<Button>(R.id.aiMealBtn)
-        aiMealBtn.setOnClickListener {
-            startActivity(Intent(this, MealRecognitionActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
@@ -385,6 +379,27 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ScannerActivity::class.java)
         scannerLauncher.launch(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
+    private fun showScanOptionsDialog() {
+        val options = arrayOf(
+            getString(R.string.scan_option_barcode),
+            getString(R.string.scan_option_meal_photo)
+        )
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.scan_title_unified))
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> launchScanner()
+                    1 -> {
+                        startActivity(Intent(this, MealRecognitionActivity::class.java))
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
+                }
+            }
+            .setNegativeButton(getString(R.string.close), null)
+            .show()
     }
 
     private fun showProfileDialog() {

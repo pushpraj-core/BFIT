@@ -25,7 +25,7 @@
     <string name="launch_chatbot">Launch Chatbot</string>
     <string name="daily_summary">Daily Summary</string>
     <string name="protein">Protein</string>
-    <string name="view_full_plan">Full Plan</string>
+    <string name="view_full_plan">Meal + Workout Plan</string>
     <string name="store">Shop</string>
     <string name="recommended_supplements">Recommended Supplements</string>
     <string name="buy_now">View on Amazon</string>
@@ -54,7 +54,7 @@
     <string name="weekly_progress">Weekly Progress</string>
     <string name="ai_meal_recognition">AI Meal</string>
     <string name="primary_action_generate_plan">Generate Plan</string>
-    <string name="primary_action_todays_plan">Open Today\'s Plan</string>
+    <string name="primary_action_todays_plan">Open Today\'s Meal + Workout Plan</string>
     <string name="secondary_actions">Quick Actions</string>
     <string name="progress_title">Progress &amp; Insights</string>
     <string name="weight_trend_subtitle">Track your trend and stay consistent</string>
@@ -95,4 +95,8 @@
     <string name="bmi_icon_cd">BMI summary</string>
     <string name="add_custom_meal">Add Custom Meal</string>
     <string name="dashboard_actions_cd">Dashboard quick actions</string>
+    <string name="scan_food_unified">Scan Food (Barcode/Meal)</string>
+    <string name="scan_title_unified">Choose Scan Type</string>
+    <string name="scan_option_barcode">Barcode Scanner</string>
+    <string name="scan_option_meal_photo">Meal Photo Recognition</string>
 </resources>
