@@ -121,12 +121,34 @@
                     android:layout_marginTop="10dp"
                     android:text="Latest Weight: --" />
 
-                <com.example.bfit.WeightGraphView
-                    android:id="@+id/weightGraph"
-                    android:layout_width="match_parent"
-                    android:layout_height="260dp"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/rangeToggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:background="@android:color/transparent" />
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/range7dBtn"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7D" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/range30dBtn"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30D" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/weightChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp"
+                    android:layout_marginTop="12dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

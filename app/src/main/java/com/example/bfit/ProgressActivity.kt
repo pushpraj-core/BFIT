@@ -1,12 +1,21 @@
 package com.example.bfit
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bfit.database.PlanRepository
+import com.example.bfit.database.WeightLogEntry
 import com.example.bfit.database.WeeklyProgressReport
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
@@ -27,7 +36,12 @@ class ProgressActivity : AppCompatActivity() {
     private lateinit var weightInput: TextInputEditText
     private lateinit var saveWeightButton: MaterialButton
     private lateinit var latestWeightText: TextView
-    private lateinit var weightGraph: WeightGraphView
+    private lateinit var rangeToggleGroup: MaterialButtonToggleGroup
+    private lateinit var range7dBtn: MaterialButton
+    private lateinit var range30dBtn: MaterialButton
+    private lateinit var weightChart: LineChart
+
+    private var activeRangeDays: Int = 30
 
     private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
@@ -47,7 +61,19 @@ class ProgressActivity : AppCompatActivity() {
         weightInput = findViewById(R.id.weightInput)
         saveWeightButton = findViewById(R.id.saveWeightButton)
         latestWeightText = findViewById(R.id.latestWeightText)
-        weightGraph = findViewById(R.id.weightGraph)
+        rangeToggleGroup = findViewById(R.id.rangeToggleGroup)
+        range7dBtn = findViewById(R.id.range7dBtn)
+        range30dBtn = findViewById(R.id.range30dBtn)
+        weightChart = findViewById(R.id.weightChart)
+
+        setupChart()
+
+        range30dBtn.isChecked = true
+        rangeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            activeRangeDays = if (checkedId == R.id.range7dBtn) 7 else 30
+            refreshWeightSection()
+        }
 
         saveWeightButton.setOnClickListener {
             val enteredWeight = weightInput.text?.toString()?.toFloatOrNull()
@@ -85,6 +111,32 @@ class ProgressActivity : AppCompatActivity() {
         loggedDaysText.text = "Days with logs: ${report.daysLogged}"
     }
 
+    private fun setupChart() {
+        weightChart.description.isEnabled = false
+        weightChart.legend.isEnabled = false
+        weightChart.setNoDataText("No weight logs yet")
+        weightChart.setNoDataTextColor(Color.DKGRAY)
+        weightChart.setTouchEnabled(true)
+        weightChart.setPinchZoom(false)
+        weightChart.setScaleEnabled(false)
+        weightChart.setDrawGridBackground(false)
+        weightChart.animateX(500)
+        weightChart.marker = WeightMarkerView(this)
+
+        val xAxis = weightChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.granularity = 1f
+        xAxis.textColor = Color.DKGRAY
+
+        val yAxisLeft = weightChart.axisLeft
+        yAxisLeft.setDrawGridLines(true)
+        yAxisLeft.textColor = Color.DKGRAY
+        yAxisLeft.axisMinimum = 0f
+
+        weightChart.axisRight.isEnabled = false
+    }
+
     private fun refreshWeightSection() {
         val end = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -95,11 +147,11 @@ class ProgressActivity : AppCompatActivity() {
 
         val start = Calendar.getInstance().apply {
             timeInMillis = end
-            add(Calendar.DAY_OF_YEAR, -29)
+            add(Calendar.DAY_OF_YEAR, -(activeRangeDays - 1))
         }.timeInMillis
 
         val entries = planRepository.getWeightLogEntriesBetween(start, end)
-        weightGraph.setData(entries)
+        renderChart(entries)
 
         val latestEntry = planRepository.getLatestWeightLogEntry()
         if (latestEntry == null) {
@@ -107,5 +159,47 @@ class ProgressActivity : AppCompatActivity() {
         } else {
             latestWeightText.text = "Latest Weight: ${"%.1f".format(latestEntry.weightKg)} kg on ${dateFormatter.format(latestEntry.date)}"
         }
+    }
+
+    private fun renderChart(weightEntries: List<WeightLogEntry>) {
+        if (weightEntries.isEmpty()) {
+            weightChart.clear()
+            return
+        }
+
+        val sorted = weightEntries.sortedBy { it.date }
+        val lineEntries = sorted.mapIndexed { index, item ->
+            Entry(index.toFloat(), item.weightKg)
+        }
+
+        val dataSet = LineDataSet(lineEntries, "Weight").apply {
+            color = Color.parseColor("#0D9488")
+            lineWidth = 2.8f
+            setCircleColor(Color.parseColor("#0F766E"))
+            circleRadius = 4f
+            setDrawCircleHole(false)
+            setDrawValues(false)
+            highLightColor = Color.parseColor("#111827")
+            setDrawHorizontalHighlightIndicator(false)
+        }
+
+        val labels = sorted.map { dateFormatter.format(it.date) }
+        weightChart.xAxis.labelCount = labels.size.coerceAtMost(5)
+        weightChart.xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val index = value.toInt()
+                return if (index in labels.indices) labels[index] else ""
+            }
+        }
+
+        val minWeight = sorted.minOf { it.weightKg }
+        val maxWeight = sorted.maxOf { it.weightKg }
+        val padding = ((maxWeight - minWeight) * 0.25f).coerceAtLeast(1f)
+
+        weightChart.axisLeft.axisMinimum = (minWeight - padding).coerceAtLeast(0f)
+        weightChart.axisLeft.axisMaximum = maxWeight + padding
+
+        weightChart.data = LineData(dataSet)
+        weightChart.invalidate()
     }
 }
