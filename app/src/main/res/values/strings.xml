@@ -51,4 +51,5 @@
     <string name="profile">Profile</string>
     <string name="grocery_list_title">Grocery List 🛒</string>
     <string name="grocery_list">Groceries</string>
+    <string name="weekly_progress">Weekly Progress</string>
 </resources>

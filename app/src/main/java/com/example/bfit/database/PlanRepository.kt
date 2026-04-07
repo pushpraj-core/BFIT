@@ -6,6 +6,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
+data class WeeklyProgressReport(
+    val completedDays: Int,
+    val totalCalories: Int,
+    val averageCalories: Int,
+    val totalProtein: Int,
+    val averageProtein: Int,
+    val daysLogged: Int
+)
+
 class PlanRepository(context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences("plan_prefs", Context.MODE_PRIVATE)
@@ -76,6 +85,12 @@ class PlanRepository(context: Context) {
         }
     }
 
+    fun getDailyLogsBetween(startDate: Long, endDate: Long): List<DailyLog> {
+        return runBlocking(Dispatchers.IO) {
+            planDao.getDailyLogsBetween(startDate, endDate)
+        }
+    }
+
     fun updateDailyLog(date: Long, calories: Int, protein: Int) {
         runBlocking(Dispatchers.IO) {
             planDao.insertDailyLog(DailyLog(date, calories, protein))
@@ -92,6 +107,45 @@ class PlanRepository(context: Context) {
         return runBlocking(Dispatchers.IO) {
             planDao.getExtraMealItems(date)
         }
+    }
+
+    fun getWeeklyProgressReport(endDate: Long = startOfDay(System.currentTimeMillis())): WeeklyProgressReport {
+        val calendar = Calendar.getInstance().apply { timeInMillis = endDate }
+        calendar.add(Calendar.DAY_OF_YEAR, -6)
+        val startDate = startOfDay(calendar.timeInMillis)
+
+        val logs = getDailyLogsBetween(startDate, endDate)
+        val completedDays = (0..6).count { offset ->
+            val day = Calendar.getInstance().apply {
+                timeInMillis = startDate
+                add(Calendar.DAY_OF_YEAR, offset)
+            }
+            isDayComplete(startOfDay(day.timeInMillis))
+        }
+
+        val totalCalories = logs.sumOf { it.totalCalories }
+        val totalProtein = logs.sumOf { it.totalProtein }
+        val safeDays = logs.size.coerceAtLeast(1)
+
+        return WeeklyProgressReport(
+            completedDays = completedDays,
+            totalCalories = totalCalories,
+            averageCalories = totalCalories / safeDays,
+            totalProtein = totalProtein,
+            averageProtein = totalProtein / safeDays,
+            daysLogged = logs.size
+        )
+    }
+
+    private fun startOfDay(timeInMillis: Long): Long {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = timeInMillis
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        return calendar.timeInMillis
     }
 
     fun getStreak(): Int {

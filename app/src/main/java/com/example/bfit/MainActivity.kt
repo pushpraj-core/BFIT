@@ -310,6 +310,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        val progressBtn = dashboardView.findViewById<Button>(R.id.progressBtn)
+        progressBtn.setOnClickListener {
+            startActivity(Intent(this, ProgressActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         // Grocery List button
         val groceryBtn = dashboardView.findViewById<Button>(R.id.groceryBtn)
         groceryBtn.setOnClickListener {

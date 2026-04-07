@@ -20,6 +20,9 @@ interface PlanDao {
     @Query("SELECT * FROM daily_log WHERE date = :date")
     suspend fun getDailyLog(date: Long): DailyLog?
 
+    @Query("SELECT * FROM daily_log WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
+    suspend fun getDailyLogsBetween(startDate: Long, endDate: Long): List<DailyLog>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExtraMealItem(extraMealItem: ExtraMealItem)
 

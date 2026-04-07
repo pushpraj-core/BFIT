@@ -534,6 +534,15 @@
                             android:text="@string/logout"
                             app:cornerRadius="12dp" />
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/progressBtn"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="@string/weekly_progress"
+                            app:cornerRadius="12dp" />
+
                     </GridLayout>
                 </com.google.android.material.card.MaterialCardView>
 
