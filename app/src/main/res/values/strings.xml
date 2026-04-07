@@ -26,7 +26,7 @@
     <string name="daily_summary">Daily Summary</string>
     <string name="protein">Protein</string>
     <string name="view_full_plan">Meal + Workout Plan</string>
-    <string name="store">Shop</string>
+    <string name="store">Shop Supplements</string>
     <string name="recommended_supplements">Recommended Supplements</string>
     <string name="buy_now">View on Amazon</string>
     <string name="calories_consumed_format">%1$d / %2$d kcal</string>
@@ -99,4 +99,8 @@
     <string name="scan_title_unified">Choose Scan Type</string>
     <string name="scan_option_barcode">Barcode Scanner</string>
     <string name="scan_option_meal_photo">Meal Photo Recognition</string>
+    <string name="section_exercise_plan">Exercise and Plan</string>
+    <string name="section_progress_graph">Progress and Graph</string>
+    <string name="section_scan">Food Scan</string>
+    <string name="section_utilities">Utilities</string>
 </resources>

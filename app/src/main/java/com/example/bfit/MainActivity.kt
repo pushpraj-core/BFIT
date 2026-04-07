@@ -203,7 +203,6 @@ class MainActivity : AppCompatActivity() {
         val weightInput = inputForm.findViewById<EditText>(R.id.weightInput)
         val genderRadioGroup = inputForm.findViewById<RadioGroup>(R.id.genderRadioGroup)
         val calcBtn = inputForm.findViewById<Button>(R.id.calcBtn)
-        val scanBtn = findViewById<Button>(R.id.scanBtn)
         val fabChat = findViewById<FloatingActionButton>(R.id.fabChat)
         val dietaryPreference = inputForm.findViewById<AutoCompleteTextView>(R.id.dietaryPreference)
         val bodyGoal = inputForm.findViewById<AutoCompleteTextView>(R.id.bodyGoal)
@@ -283,10 +282,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             showDashboard()
-        }
-
-        scanBtn.setOnClickListener {
-            showScanOptionsDialog()
         }
 
         // Dashboard scan button

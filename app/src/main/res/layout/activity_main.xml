@@ -25,17 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/scanBtn"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/scan_food"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_baseline_qr_code_scanner_24" />
-
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -476,84 +465,144 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_md"
                     android:layout_marginBottom="@dimen/space_xs"
-                    android:text="@string/secondary_actions"
+                    android:text="@string/section_exercise_plan"
                     android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-                <!-- Action Buttons — wrapped in GridLayout to prevent overflow -->
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/space_md">
 
-                    <GridLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:columnCount="2"
-                        android:padding="@dimen/space_xs"
-                        android:useDefaultMargins="true">
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_xs">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/viewPlanBtn"
                             style="@style/Widget.BFIT.ActionButton"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
                             android:text="@string/view_full_plan"
                             app:icon="@drawable/ic_baseline_restaurant_24"
                             app:iconGravity="textStart"
                             app:cornerRadius="12dp" />
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/groceryBtn"
+                            style="@style/Widget.BFIT.ActionButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_xs"
+                            android:text="@string/grocery_list"
+                            app:icon="@drawable/ic_baseline_restaurant_24"
+                            app:iconGravity="textStart"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:text="@string/section_progress_graph"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_xs">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/progressBtn"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weekly_progress"
+                            app:icon="@drawable/ic_baseline_monitor_weight_24"
+                            app:iconGravity="textStart"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:text="@string/section_scan"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_xs">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/scanDashBtn"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/scan_food_unified"
+                            app:icon="@drawable/ic_baseline_qr_code_scanner_24"
+                            app:iconGravity="textStart"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:text="@string/section_utilities"
+                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_md">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/space_xs">
+
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/storeBtn"
                             style="@style/Widget.BFIT.ActionButton"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
                             android:text="@string/store"
                             app:icon="@drawable/ic_baseline_fitness_center_24"
                             app:iconGravity="textStart"
                             app:cornerRadius="12dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/groceryBtn"
-                            style="@style/Widget.BFIT.ActionButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:text="@string/grocery_list"
-                            app:cornerRadius="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/scanDashBtn"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:text="@string/scan_food_unified"
-                            app:icon="@drawable/ic_baseline_qr_code_scanner_24"
-                            app:iconGravity="textStart"
-                            app:cornerRadius="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/logoutBtn"
                             style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
+                            android:layout_marginTop="@dimen/space_xs"
                             android:text="@string/logout"
                             app:cornerRadius="12dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/progressBtn"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:text="@string/weekly_progress"
-                            app:cornerRadius="12dp" />
-
-                    </GridLayout>
+                    </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
