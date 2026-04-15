@@ -3,6 +3,7 @@ package com.example.bfit
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bfit.charts.CalorieBarChartView
 import com.example.bfit.charts.WeightLineChartView
@@ -28,15 +29,17 @@ class WeeklyReportActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        })
+
         val targetCalories = intent.getIntExtra("targetCalories", 2000)
         val targetProtein = intent.getIntExtra("targetProtein", 100)
 
         generateReport(targetCalories, targetProtein)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
     private fun generateReport(targetCalories: Int, targetProtein: Int) {

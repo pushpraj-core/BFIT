@@ -49,6 +49,12 @@
         <activity
             android:name=".WeeklyReportActivity"
             android:exported="false" />
+        <activity
+            android:name=".ProgressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MealRecognitionActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

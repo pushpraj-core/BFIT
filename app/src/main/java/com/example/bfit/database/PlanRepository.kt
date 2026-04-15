@@ -156,4 +156,72 @@ class PlanRepository(context: Context) {
             planDao.getWeightEntriesSince(startDate)
         }
     }
+
+    // ─── Weight Log (for ProgressActivity) ───
+
+    fun addWeightLogEntry(date: Long, weightKg: Float) {
+        runBlocking(Dispatchers.IO) {
+            planDao.insertWeightLogEntry(WeightLogEntry(date = date, weightKg = weightKg))
+        }
+    }
+
+    fun getWeightLogEntriesBetween(startDate: Long, endDate: Long): List<WeightLogEntry> {
+        return runBlocking(Dispatchers.IO) {
+            planDao.getWeightLogEntriesBetween(startDate, endDate)
+        }
+    }
+
+    fun getLatestWeightLogEntry(): WeightLogEntry? {
+        return runBlocking(Dispatchers.IO) {
+            planDao.getLatestWeightLogEntry()
+        }
+    }
+
+    // ─── Weekly Progress Report ───
+
+    fun getWeeklyProgressReport(): WeeklyProgressReport {
+        return runBlocking(Dispatchers.IO) {
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val today = calendar.timeInMillis
+            calendar.add(Calendar.DAY_OF_YEAR, -6)
+            val weekStart = calendar.timeInMillis
+
+            val dailyLogs = planDao.getDailyLogsBetween(weekStart, today)
+            val totalCalories = dailyLogs.sumOf { it.totalCalories }
+            val totalProtein = dailyLogs.sumOf { it.totalProtein }
+            val daysLogged = dailyLogs.count { it.totalCalories > 0 }
+
+            var completedDays = 0
+            val cal = Calendar.getInstance().apply {
+                timeInMillis = today
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            for (i in 0 until 7) {
+                if (isDayComplete(cal.timeInMillis)) {
+                    completedDays++
+                }
+                cal.add(Calendar.DAY_OF_YEAR, -1)
+            }
+
+            val avgCalories = if (daysLogged > 0) totalCalories / daysLogged else 0
+            val avgProtein = if (daysLogged > 0) totalProtein / daysLogged else 0
+
+            WeeklyProgressReport(
+                completedDays = completedDays,
+                totalCalories = totalCalories,
+                totalProtein = totalProtein,
+                averageCalories = avgCalories,
+                averageProtein = avgProtein,
+                daysLogged = daysLogged
+            )
+        }
+    }
 }

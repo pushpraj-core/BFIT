@@ -355,6 +355,20 @@ class MainActivity : AppCompatActivity() {
             showCustomMealDialog()
         }
 
+        // Feature card: Progress
+        dashboardView.findViewById<View>(R.id.progressCard).setOnClickListener {
+            val intent = Intent(this, ProgressActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        // Feature card: AI Meal Recognition
+        dashboardView.findViewById<View>(R.id.aiMealCard).setOnClickListener {
+            val intent = Intent(this, MealRecognitionActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         fabChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)

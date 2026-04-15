@@ -21,9 +21,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         PlanItemCompletion::class,
         DailyLog::class,
         ExtraMealItem::class,
-        WeightEntry::class
+        WeightEntry::class,
+        WeightLogEntry::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class PlanDatabase : RoomDatabase() {
@@ -53,6 +54,17 @@ abstract class PlanDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS weight_log (
+                        date INTEGER NOT NULL PRIMARY KEY,
+                        weightKg REAL NOT NULL
+                    )
+                """.trimIndent())
+            }
+        }
+
         fun getDatabase(context: Context): PlanDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -60,7 +72,7 @@ abstract class PlanDatabase : RoomDatabase() {
                     PlanDatabase::class.java,
                     "plan_database"
                 )
-                    .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
+                    .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                     .build()
                 INSTANCE = instance
                 instance

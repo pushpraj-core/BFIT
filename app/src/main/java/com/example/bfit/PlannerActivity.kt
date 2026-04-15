@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bfit.database.PlanRepository
 import com.example.bfit.databinding.ActivityPlannerBinding
@@ -27,6 +28,7 @@ class PlannerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         planRepository = PlanRepository(this)
+        setupBackNavigation()
 
         // Back button
         binding.backButton.setOnClickListener {
@@ -144,9 +146,13 @@ class PlannerActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        })
     }
 
     private fun updateStreak() {

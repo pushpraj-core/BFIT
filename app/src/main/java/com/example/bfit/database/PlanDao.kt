@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 
 /**
  * Data Access Object for all plan-related database operations.
@@ -50,4 +51,20 @@ interface PlanDao {
 
     @Query("SELECT * FROM weight_entries WHERE date >= :startDate ORDER BY date ASC")
     suspend fun getWeightEntriesSince(startDate: Long): List<WeightEntry>
+
+    // ─── Weight Log (for ProgressActivity) ───
+
+    @Upsert
+    suspend fun insertWeightLogEntry(entry: WeightLogEntry)
+
+    @Query("SELECT * FROM weight_log WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
+    suspend fun getWeightLogEntriesBetween(startDate: Long, endDate: Long): List<WeightLogEntry>
+
+    @Query("SELECT * FROM weight_log ORDER BY date DESC LIMIT 1")
+    suspend fun getLatestWeightLogEntry(): WeightLogEntry?
+
+    // ─── Daily Log range queries ───
+
+    @Query("SELECT * FROM daily_log WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
+    suspend fun getDailyLogsBetween(startDate: Long, endDate: Long): List<DailyLog>
 }
