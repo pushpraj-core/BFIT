@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.bfit.database.FirestoreRepository
 import com.example.bfit.database.PlanRepository
 import com.example.bfit.database.WeightLogEntry
 import com.example.bfit.database.WeeklyProgressReport
@@ -21,6 +24,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -28,6 +32,7 @@ import java.util.Locale
 class ProgressActivity : AppCompatActivity() {
 
     private lateinit var planRepository: PlanRepository
+    private lateinit var firestoreRepository: FirestoreRepository
 
     private lateinit var completedDaysText: TextView
     private lateinit var completedDaysProgress: LinearProgressIndicator
@@ -63,7 +68,17 @@ class ProgressActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        // Back navigation
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                @Suppress("DEPRECATION")
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        })
+
         planRepository = PlanRepository(this)
+        firestoreRepository = FirestoreRepository()
 
         completedDaysText = findViewById(R.id.completedDaysText)
         completedDaysProgress = findViewById(R.id.completedDaysProgress)
@@ -112,15 +127,24 @@ class ProgressActivity : AppCompatActivity() {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
 
-            planRepository.addWeightLogEntry(todayStart, enteredWeight)
-            weightInput.setText("")
-            Toast.makeText(this, "Weight saved", Toast.LENGTH_SHORT).show()
-            refreshWeightSection()
+            lifecycleScope.launch {
+                planRepository.addWeightLogEntry(todayStart, enteredWeight)
+                weightInput.setText("")
+
+                // Also sync to Firestore
+                firestoreRepository.saveWeightEntry(todayStart, enteredWeight, 0f)
+
+                Toast.makeText(this@ProgressActivity, "Weight saved ✅", Toast.LENGTH_SHORT).show()
+                refreshWeightSection()
+            }
         }
 
-        val report = planRepository.getWeeklyProgressReport()
-        bindWeeklyReport(report)
-        refreshWeightSection()
+        // Load data asynchronously
+        lifecycleScope.launch {
+            val report = planRepository.getWeeklyProgressReport()
+            bindWeeklyReport(report)
+            refreshWeightSection()
+        }
         animateIntro()
     }
 
@@ -175,31 +199,33 @@ class ProgressActivity : AppCompatActivity() {
     }
 
     private fun refreshWeightSection() {
-        val end = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.timeInMillis
+        lifecycleScope.launch {
+            val end = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
 
-        val start = Calendar.getInstance().apply {
-            timeInMillis = end
-            add(Calendar.DAY_OF_YEAR, -(activeRangeDays - 1))
-        }.timeInMillis
+            val start = Calendar.getInstance().apply {
+                timeInMillis = end
+                add(Calendar.DAY_OF_YEAR, -(activeRangeDays - 1))
+            }.timeInMillis
 
-        val entries = planRepository.getWeightLogEntriesBetween(start, end)
-        renderChart(entries)
-        bindKpiData()
+            val entries = planRepository.getWeightLogEntriesBetween(start, end)
+            renderChart(entries)
+            bindKpiData()
 
-        val latestEntry = planRepository.getLatestWeightLogEntry()
-        if (latestEntry == null) {
-            latestWeightText.text = "Latest Weight: --"
-        } else {
-            latestWeightText.text = "Latest Weight: ${"%.1f".format(latestEntry.weightKg)} kg on ${dateFormatter.format(latestEntry.date)}"
+            val latestEntry = planRepository.getLatestWeightLogEntry()
+            if (latestEntry == null) {
+                latestWeightText.text = "Latest Weight: --"
+            } else {
+                latestWeightText.text = "Latest Weight: ${"%.1f".format(latestEntry.weightKg)} kg on ${dateFormatter.format(latestEntry.date)}"
+            }
         }
     }
 
-    private fun bindKpiData() {
+    private suspend fun bindKpiData() {
         val today = startOfDay(System.currentTimeMillis())
         val weekStart = Calendar.getInstance().apply {
             timeInMillis = today

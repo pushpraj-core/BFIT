@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.bfit.charts.CalorieBarChartView
 import com.example.bfit.charts.WeightLineChartView
 import com.example.bfit.database.PlanRepository
 import com.example.bfit.databinding.ActivityWeeklyReportBinding
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Locale
 
@@ -39,10 +41,13 @@ class WeeklyReportActivity : AppCompatActivity() {
         val targetCalories = intent.getIntExtra("targetCalories", 2000)
         val targetProtein = intent.getIntExtra("targetProtein", 100)
 
-        generateReport(targetCalories, targetProtein)
+        // Generate report asynchronously
+        lifecycleScope.launch {
+            generateReport(targetCalories, targetProtein)
+        }
     }
 
-    private fun generateReport(targetCalories: Int, targetProtein: Int) {
+    private suspend fun generateReport(targetCalories: Int, targetProtein: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)

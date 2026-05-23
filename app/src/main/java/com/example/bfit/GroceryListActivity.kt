@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bfit.databinding.ActivityGroceryListBinding
@@ -34,6 +35,7 @@ class GroceryListActivity : AppCompatActivity() {
         // Back button
         binding.backButton.setOnClickListener {
             finish()
+            @Suppress("DEPRECATION")
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
@@ -70,10 +72,7 @@ class GroceryListActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-    }
+
 
     private fun updateCounter() {
         val checked = groceryItems.count { it.isChecked }

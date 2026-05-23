@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bfit.database.ExtraMealItem
 import com.example.bfit.database.FirestoreRepository
 import com.example.bfit.database.PlanRepository
+import com.example.bfit.network.NetworkUtils
 import com.example.bfit.network.RetrofitInstance
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -88,6 +89,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchFoodData(barcode: String) {
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_LONG).show()
+            return
+        }
         lifecycleScope.launch {
             try {
                 val response = RetrofitInstance.api.getFoodData(barcode)
@@ -100,10 +105,10 @@ class MainActivity : AppCompatActivity() {
                     val fats = product.nutriments?.fat_100g ?: 0.0
                     showFoodInfoDialog(productName, calories, protein, carbs, fats)
                 } else {
-                    Toast.makeText(this@MainActivity, "Product not found", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Product not found for this barcode", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "Error fetching data: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "Error fetching data: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -125,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         carbsText.text = "${carbs.toInt()}g"
         fatsText.text = "${fats.toInt()}g"
 
-        // Calculate progress (as percentage of 100g maxes)
+        // Calculate progress (as percentage of total macros)
         val totalMacros = protein + carbs + fats
         if (totalMacros > 0) {
             proteinProgress.progress = ((protein / totalMacros) * 100).toInt()
@@ -168,15 +173,15 @@ class MainActivity : AppCompatActivity() {
             calories = calories,
             protein = protein
         )
-        planRepository.addExtraMealItem(extraMealItem)
-        planRepository.addCaloriesToDailyLog(date, calories, protein)
-
-        // Also sync to Firestore
         lifecycleScope.launch {
-            firestoreRepository.addFoodToLog(date, name, calories, protein, carbs, fats)
-        }
+            planRepository.addExtraMealItem(extraMealItem)
+            planRepository.addCaloriesToDailyLog(date, calories, protein)
 
-        navigateToPlanner(date)
+            // Also sync to Firestore
+            firestoreRepository.addFoodToLog(date, name, calories, protein, carbs, fats)
+
+            navigateToPlanner(date)
+        }
     }
 
     private fun navigateToPlanner(date: Long) {
@@ -569,17 +574,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Show recent weight history
-        val recentEntries = planRepository.getRecentWeightEntries(7)
-        if (recentEntries.isEmpty()) {
-            weightHistoryText.text = getString(R.string.no_weight_history)
-        } else {
-            val historyLines = recentEntries.map { entry ->
-                val cal = java.util.Calendar.getInstance()
-                cal.timeInMillis = entry.date
-                val dateStr = String.format(Locale.getDefault(), "%02d/%02d", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1)
-                String.format(Locale.getDefault(), "%s  →  %.1f kg (BMI: %.1f)", dateStr, entry.weight, entry.bmi)
+        lifecycleScope.launch {
+            val recentEntries = planRepository.getRecentWeightEntries(7)
+            if (recentEntries.isEmpty()) {
+                weightHistoryText.text = getString(R.string.no_weight_history)
+            } else {
+                val historyLines = recentEntries.map { entry ->
+                    val cal = java.util.Calendar.getInstance()
+                    cal.timeInMillis = entry.date
+                    val dateStr = String.format(Locale.getDefault(), "%02d/%02d", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1)
+                    String.format(Locale.getDefault(), "%s  →  %.1f kg (BMI: %.1f)", dateStr, entry.weight, entry.bmi)
+                }
+                weightHistoryText.text = historyLines.joinToString("\n")
             }
-            weightHistoryText.text = historyLines.joinToString("\n")
         }
 
         val dialog = AlertDialog.Builder(this)
@@ -604,15 +611,17 @@ class MainActivity : AppCompatActivity() {
                 currentBmi = bmi
             }
 
-            // Save locally
-            planRepository.addWeightEntry(weight, bmi)
-
-            // Update saved weight in preferences
-            sharedPreferences.edit { putString("weight", weightStr) }
-            sharedPreferences.edit { putFloat("bmi", bmi) }
-
-            // Sync to Firestore
             lifecycleScope.launch {
+                // Save locally
+                planRepository.addWeightEntry(weight, bmi)
+
+                // Update saved weight in preferences (single edit call)
+                sharedPreferences.edit {
+                    putString("weight", weightStr)
+                    putFloat("bmi", bmi)
+                }
+
+                // Sync to Firestore
                 val today = Calendar.getInstance().apply {
                     set(Calendar.HOUR_OF_DAY, 0)
                     set(Calendar.MINUTE, 0)
@@ -621,11 +630,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 firestoreRepository.saveWeightEntry(today.timeInMillis, weight, bmi)
                 firestoreRepository.saveUserProfile(mapOf("weight" to weight))
-            }
 
-            Toast.makeText(this, getString(R.string.weight_saved), Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-            showDashboard() // Refresh dashboard with new BMI
+                Toast.makeText(this@MainActivity, getString(R.string.weight_saved), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                showDashboard() // Refresh dashboard with new BMI
+            }
         }
 
         dialog.show()
@@ -669,6 +678,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearUserData() {
         sharedPreferences.edit { clear() }
+        // Also clear demo mode flag so the user is properly logged out
+        getSharedPreferences("user_data", MODE_PRIVATE).edit {
+            remove(LoginActivity.DEMO_MODE_KEY)
+        }
         currentPlan = null
         currentBmi = 0f
         currentGoal = ""
@@ -710,113 +723,120 @@ class MainActivity : AppCompatActivity() {
         val exerciseCard = dashboardView.findViewById<MaterialCardView>(R.id.exerciseCard)
 
         currentPlan?.let { plan ->
-            val today = Calendar.getInstance()
-            today.set(Calendar.HOUR_OF_DAY, 0)
-            today.set(Calendar.MINUTE, 0)
-            today.set(Calendar.SECOND, 0)
-            today.set(Calendar.MILLISECOND, 0)
-            val dayStart = today.timeInMillis
-            val dayKey = ((today.get(Calendar.DAY_OF_WEEK) + 5) % 7 + 1).toString()
-            val mealPlanForToday = plan.mealPlan[dayKey]
+            lifecycleScope.launch {
+                val today = Calendar.getInstance()
+                today.set(Calendar.HOUR_OF_DAY, 0)
+                today.set(Calendar.MINUTE, 0)
+                today.set(Calendar.SECOND, 0)
+                today.set(Calendar.MILLISECOND, 0)
+                val dayStart = today.timeInMillis
+                val dayKey = ((today.get(Calendar.DAY_OF_WEEK) + 5) % 7 + 1).toString()
+                val mealPlanForToday = plan.mealPlan[dayKey]
 
-            // ─── Meals only (no exercise) ───
-            val mealItems = mutableListOf<PlanListItem>()
-            if (mealPlanForToday != null) {
-                mealPlanForToday.forEachIndexed { index, meal ->
-                    val (mealName, kcal, protein) = meal
-                    val header = when(index) {
-                        0 -> "Breakfast"
-                        1 -> "Lunch"
-                        2 -> "Dinner"
-                        else -> "Snack ${index - 2}"
+                // ─── Meals only (no exercise) ───
+                val mealItems = mutableListOf<PlanListItem>()
+                if (mealPlanForToday != null) {
+                    mealPlanForToday.forEachIndexed { index, meal ->
+                        val (mealName, kcal, protein) = meal
+                        val header = when(index) {
+                            0 -> "Breakfast"
+                            1 -> "Lunch"
+                            2 -> "Dinner"
+                            else -> "Snack ${index - 2}"
+                        }
+                        mealItems.add(PlanListItem.Header(header))
+                        mealItems.add(PlanListItem.PlanItem(
+                            id = "$dayStart-FOOD-$mealName-$index", 
+                            type = ItemType.FOOD, 
+                            text = "$mealName ($kcal kcal, $protein g protein)"
+                        ))
                     }
-                    mealItems.add(PlanListItem.Header(header))
-                    mealItems.add(PlanListItem.PlanItem(
-                        id = "$dayStart-FOOD-$mealName-$index", 
-                        type = ItemType.FOOD, 
-                        text = "$mealName ($kcal kcal, $protein g protein)"
-                    ))
                 }
-            }
 
-            val extraItems = planRepository.getExtraMealItems(dayStart)
-            if (extraItems.isNotEmpty()) {
-                mealItems.add(PlanListItem.Header("Extras"))
-                mealItems.addAll(extraItems.map {
-                    PlanListItem.PlanItem(id = it.id, type = ItemType.FOOD, text = "${it.text} (${it.calories} kcal, ${it.protein} g protein)", isCompleted = planRepository.isPlanItemComplete(it.id))
-                })
-            }
-
-            // ─── Exercise (separate card) ───
-            val exerciseItems = mutableListOf<PlanListItem>()
-            if (plan.exercises.isNotEmpty()) {
-                exerciseItems.addAll(plan.exercises.split("\n").filter { it.isNotBlank() }
-                    .map { exerciseText ->
-                        PlanListItem.PlanItem(id = "$dayStart-EXERCISE-$exerciseText", type = ItemType.EXERCISE, text = exerciseText)
+                val extraItems = planRepository.getExtraMealItems(dayStart)
+                if (extraItems.isNotEmpty()) {
+                    mealItems.add(PlanListItem.Header("Extras"))
+                    mealItems.addAll(extraItems.map {
+                        PlanListItem.PlanItem(
+                            id = it.id,
+                            type = ItemType.FOOD,
+                            text = "${it.text} (${it.calories} kcal, ${it.protein} g protein)",
+                            isCompleted = planRepository.isPlanItemComplete(it.id)
+                        )
                     })
-            }
+                }
 
-            // Show/hide exercise card
-            if (exerciseItems.isNotEmpty()) {
-                exerciseCard.visibility = View.VISIBLE
-                val finalExerciseItems = exerciseItems.map { item ->
+                // ─── Exercise (separate card) ───
+                val exerciseItems = mutableListOf<PlanListItem>()
+                if (plan.exercises.isNotEmpty()) {
+                    exerciseItems.addAll(plan.exercises.split("\n").filter { it.isNotBlank() }
+                        .map { exerciseText ->
+                            PlanListItem.PlanItem(id = "$dayStart-EXERCISE-$exerciseText", type = ItemType.EXERCISE, text = exerciseText)
+                        })
+                }
+
+                // Show/hide exercise card
+                if (exerciseItems.isNotEmpty()) {
+                    exerciseCard.visibility = View.VISIBLE
+                    val finalExerciseItems = exerciseItems.map { item ->
+                        if (item is PlanListItem.PlanItem) {
+                            item.isCompleted = planRepository.isPlanItemComplete(item.id)
+                        }
+                        item
+                    }
+                    exerciseRecyclerView.adapter = PlanAdapter(finalExerciseItems) { item, isCompleted ->
+                        lifecycleScope.launch {
+                            planRepository.markPlanItemAsComplete(item.id, isCompleted, 0, 0)
+                        }
+                    }
+                } else {
+                    exerciseCard.visibility = View.GONE
+                }
+
+                // Calculate totals from meals
+                var totalCalories = 0
+                var totalProtein = 0
+                val finalPlanItems = mealItems.map { item ->
                     if (item is PlanListItem.PlanItem) {
                         item.isCompleted = planRepository.isPlanItemComplete(item.id)
+                        if (item.isCompleted) {
+                            val kcalRegex = "(\\d+)\\s*kcal".toRegex()
+                            val proteinRegex = "(\\d+)\\s*g".toRegex()
+                            totalCalories += kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                            totalProtein += proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                        }
                     }
                     item
                 }
-                exerciseRecyclerView.adapter = PlanAdapter(finalExerciseItems) { item, isCompleted ->
-                    planRepository.markPlanItemAsComplete(item.id, isCompleted, 0, 0)
-                }
-            } else {
-                exerciseCard.visibility = View.GONE
-            }
+                planRepository.updateDailyLog(dayStart, totalCalories, totalProtein)
 
-            // Calculate totals from meals
-            var totalCalories = 0
-            var totalProtein = 0
-            val finalPlanItems = mealItems.map { item ->
-                if (item is PlanListItem.PlanItem) {
-                    item.isCompleted = planRepository.isPlanItemComplete(item.id)
-                    if (item.isCompleted) {
-                        val kcalRegex = "(\\d+)\\s*kcal".toRegex()
-                        val proteinRegex = "(\\d+)\\s*g".toRegex()
-                        totalCalories += kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
-                        totalProtein += proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
-                    }
-                }
-                item
-            }
-            planRepository.updateDailyLog(dayStart, totalCalories, totalProtein)
-
-            // Sync daily log to Firestore
-            lifecycleScope.launch {
+                // Sync daily log to Firestore
                 firestoreRepository.saveDailyLog(dayStart, totalCalories, totalProtein)
-            }
 
-            updateDashboardCalories()
-            updateStreak()
-
-            dailyPlanRecyclerView.adapter = PlanAdapter(finalPlanItems) { item, isCompleted ->
-                val kcalRegex = "(\\d+)\\s*kcal".toRegex()
-                val proteinRegex = "(\\d+)\\s*g".toRegex()
-                val calories = kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
-                val protein = proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
-                planRepository.markPlanItemAsComplete(item.id, isCompleted, calories, protein)
-                if(isCompleted) {
-                    planRepository.markDayAsComplete(dayStart)
-                }
                 updateDashboardCalories()
                 updateStreak()
 
-                // Sync to Firestore
-                lifecycleScope.launch {
-                    val log = planRepository.getDailyLog(dayStart)
-                    firestoreRepository.saveDailyLog(
-                        dayStart,
-                        log?.totalCalories ?: 0,
-                        log?.totalProtein ?: 0
-                    )
+                dailyPlanRecyclerView.adapter = PlanAdapter(finalPlanItems) { item, isCompleted ->
+                    val kcalRegex = "(\\d+)\\s*kcal".toRegex()
+                    val proteinRegex = "(\\d+)\\s*g".toRegex()
+                    val calories = kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                    val protein = proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                    lifecycleScope.launch {
+                        planRepository.markPlanItemAsComplete(item.id, isCompleted, calories, protein)
+                        if (isCompleted) {
+                            planRepository.markDayAsComplete(dayStart)
+                        }
+                        updateDashboardCalories()
+                        updateStreak()
+
+                        // Sync to Firestore
+                        val log = planRepository.getDailyLog(dayStart)
+                        firestoreRepository.saveDailyLog(
+                            dayStart,
+                            log?.totalCalories ?: 0,
+                            log?.totalProtein ?: 0
+                        )
+                    }
                 }
             }
         }
@@ -834,23 +854,26 @@ class MainActivity : AppCompatActivity() {
         today.set(Calendar.MINUTE, 0)
         today.set(Calendar.SECOND, 0)
         today.set(Calendar.MILLISECOND, 0)
-        val dailyLog = planRepository.getDailyLog(today.timeInMillis)
 
-        val caloriesConsumed = dailyLog?.totalCalories ?: 0
-        val totalCalories = currentPlan?.calories ?: 0
-        val proteinConsumed = dailyLog?.totalProtein ?: 0
-        val totalProtein = currentPlan?.totalProtein ?: 0
+        lifecycleScope.launch {
+            val dailyLog = planRepository.getDailyLog(today.timeInMillis)
 
-        dailyCaloriesText.text = getString(R.string.calories_consumed_format, caloriesConsumed, totalCalories)
-        calorieProgressText.text = getString(R.string.calorie_progress_format, caloriesConsumed)
+            val caloriesConsumed = dailyLog?.totalCalories ?: 0
+            val totalCalories = currentPlan?.calories ?: 0
+            val proteinConsumed = dailyLog?.totalProtein ?: 0
+            val totalProtein = currentPlan?.totalProtein ?: 0
 
-        if (totalCalories > 0) {
-            calorieProgressIndicator.progress = ((caloriesConsumed * 100) / totalCalories).coerceAtMost(100)
-        }
+            dailyCaloriesText.text = getString(R.string.calories_consumed_format, caloriesConsumed, totalCalories)
+            calorieProgressText.text = getString(R.string.calorie_progress_format, caloriesConsumed)
 
-        proteinProgressText.text = getString(R.string.protein_consumed_format, proteinConsumed, totalProtein)
-        if (totalProtein > 0) {
-            proteinProgressIndicator.progress = ((proteinConsumed * 100) / totalProtein).coerceAtMost(100)
+            if (totalCalories > 0) {
+                calorieProgressIndicator.progress = ((caloriesConsumed * 100) / totalCalories).coerceAtMost(100)
+            }
+
+            proteinProgressText.text = getString(R.string.protein_consumed_format, proteinConsumed, totalProtein)
+            if (totalProtein > 0) {
+                proteinProgressIndicator.progress = ((proteinConsumed * 100) / totalProtein).coerceAtMost(100)
+            }
         }
     }
 
@@ -902,17 +925,43 @@ class MainActivity : AppCompatActivity() {
         val filteredLunches = filter(lunchOptions).shuffled()
         val filteredDinners = filter(dinnerOptions).shuffled()
 
+        /**
+         * Parse a meal string from resources into a Triple<Name, Calories, Protein>.
+         * Expected format: "Name|Portion|Calories|Protein"
+         * Falls back safely if format is unexpected.
+         */
+        fun parseMealString(raw: Any?, fallbackName: String, fallbackCal: Int, fallbackProtein: Int): Triple<String, Int, Int> {
+            return when (raw) {
+                is Triple<*, *, *> -> {
+                    @Suppress("UNCHECKED_CAST")
+                    raw as Triple<String, Int, Int>
+                }
+                is String -> {
+                    val parts = raw.split("|")
+                    Triple(
+                        parts.getOrElse(0) { fallbackName }.trim(),
+                        parts.getOrNull(2)?.trim()?.toIntOrNull() ?: fallbackCal,
+                        parts.getOrNull(3)?.trim()?.toIntOrNull() ?: fallbackProtein
+                    )
+                }
+                else -> Triple(fallbackName, fallbackCal, fallbackProtein)
+            }
+        }
+
         val mealPlan = (1..7).associate { day ->
             day.toString() to listOf(
-                filteredBreakfasts.getOrElse(day - 1) { 
-                    filteredBreakfasts.randomOrNull() ?: Triple("Classic Breakfast", 350, 15) 
-                }.let { if (it is Triple<*, *, *>) it as Triple<String, Int, Int> else (it as String).split("|").let { p -> Triple(p[0], (p.getOrNull(2)?.toIntOrNull() ?: 300), (p.getOrNull(3)?.toIntOrNull() ?: 10)) } },
-                filteredLunches.getOrElse(day - 1) { 
-                    filteredLunches.randomOrNull() ?: Triple("Healthy Lunch", 500, 30) 
-                }.let { if (it is Triple<*, *, *>) it as Triple<String, Int, Int> else (it as String).split("|").let { p -> Triple(p[0], (p.getOrNull(2)?.toIntOrNull() ?: 450), (p.getOrNull(3)?.toIntOrNull() ?: 20)) } },
-                filteredDinners.getOrElse(day - 1) { 
-                    filteredDinners.randomOrNull() ?: Triple("Light Dinner", 450, 25) 
-                }.let { if (it is Triple<*, *, *>) it as Triple<String, Int, Int> else (it as String).split("|").let { p -> Triple(p[0], (p.getOrNull(2)?.toIntOrNull() ?: 400), (p.getOrNull(3)?.toIntOrNull() ?: 25)) } }
+                parseMealString(
+                    filteredBreakfasts.getOrElse(day - 1) { filteredBreakfasts.randomOrNull() ?: "Classic Breakfast" },
+                    "Classic Breakfast", 350, 15
+                ),
+                parseMealString(
+                    filteredLunches.getOrElse(day - 1) { filteredLunches.randomOrNull() ?: "Healthy Lunch" },
+                    "Healthy Lunch", 500, 30
+                ),
+                parseMealString(
+                    filteredDinners.getOrElse(day - 1) { filteredDinners.randomOrNull() ?: "Light Dinner" },
+                    "Light Dinner", 450, 25
+                )
             )
         }
 

@@ -3,12 +3,15 @@ package com.example.bfit
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bfit.database.FirestoreRepository
 import com.example.bfit.databinding.ActivityChatBinding
+import com.example.bfit.network.NetworkUtils
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.content
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -26,6 +29,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firestoreRepository = FirestoreRepository()
+        setupBackNavigation()
 
         // Back button
         binding.backButton.setOnClickListener {
@@ -52,15 +56,32 @@ class ChatActivity : AppCompatActivity() {
 
         // Initialize Gemini AI
         val generativeModel = GenerativeModel(
-            modelName = "gemini-pro",
+            modelName = "gemini-1.5-flash",
             apiKey = BuildConfig.GEMINI_API_KEY
         )
-        val chat = generativeModel.startChat(history = listOf())
+        val chat = generativeModel.startChat(
+            history = listOf(
+                content(role = "user") {
+                    text("You are BFIT AI Coach — a helpful, friendly fitness and nutrition expert. " +
+                        "Provide practical advice about workouts, diet plans, calories, macros, supplements, " +
+                        "and healthy lifestyle. Keep responses concise and actionable. " +
+                        "Use emojis sparingly for a friendly tone.")
+                },
+                content(role = "model") {
+                    text("Got it! I'm your BFIT AI Coach 💪 I'll help you with fitness, nutrition, " +
+                        "and wellness advice. Ask me anything!")
+                }
+            )
+        )
 
         // Send button
         binding.askButton.setOnClickListener {
             val question = binding.questionInput.text.toString().trim()
             if (question.isNotEmpty()) {
+                if (!NetworkUtils.isNetworkAvailable(this)) {
+                    Toast.makeText(this, "No internet connection. Please check your network.", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
                 binding.questionInput.text?.clear()
                 addMessage(question, isUser = true)
 
@@ -81,7 +102,15 @@ class ChatActivity : AppCompatActivity() {
                         firestoreRepository.saveChatMessage(responseText, isUser = false, sessionId)
 
                     } catch (e: Exception) {
-                        addMessage("Error: ${e.message}", isUser = false)
+                        val errorMsg = when {
+                            e.message?.contains("API key", ignoreCase = true) == true ->
+                                "API key not configured. Please add your Gemini API key."
+                            e.message?.contains("network", ignoreCase = true) == true ||
+                            e.message?.contains("connect", ignoreCase = true) == true ->
+                                "Network error. Please check your connection and try again."
+                            else -> "Error: ${e.localizedMessage}"
+                        }
+                        addMessage(errorMsg, isUser = false)
                     } finally {
                         binding.loadingIndicator.visibility = View.GONE
                         binding.askButton.isEnabled = true
@@ -96,9 +125,14 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    // Back navigation is handled via OnBackPressedDispatcher registered below
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        })
     }
 
     private fun addMessage(text: String, isUser: Boolean) {

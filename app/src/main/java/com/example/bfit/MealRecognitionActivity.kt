@@ -7,9 +7,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.bfit.database.ExtraMealItem
+import com.example.bfit.database.FirestoreRepository
 import com.example.bfit.database.PlanRepository
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -17,11 +20,13 @@ import com.google.android.material.chip.Chip
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class MealRecognitionActivity : AppCompatActivity() {
 
     private lateinit var planRepository: PlanRepository
+    private lateinit var firestoreRepository: FirestoreRepository
     private lateinit var mealImagePreview: ImageView
     private lateinit var emptyMealState: TextView
     private lateinit var selectImageButton: MaterialButton
@@ -39,6 +44,8 @@ class MealRecognitionActivity : AppCompatActivity() {
     private var latestDetectedMealName: String = ""
     private var latestEstimatedCalories: Int = 0
     private var latestProtein: Int = 0
+    private var latestCarbs: Int = 0
+    private var latestFats: Int = 0
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
@@ -46,6 +53,10 @@ class MealRecognitionActivity : AppCompatActivity() {
             mealImagePreview.setImageURI(uri)
             emptyMealState.visibility = View.GONE
             mealRecognitionResult.text = "Ready to analyze"
+            // Reset state for new image
+            addToLogButton.visibility = View.GONE
+            latestDetectedMealName = ""
+            latestEstimatedCalories = 0
         }
     }
 
@@ -54,6 +65,16 @@ class MealRecognitionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_meal_recognition)
 
         planRepository = PlanRepository(this)
+        firestoreRepository = FirestoreRepository()
+
+        // Back navigation
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                @Suppress("DEPRECATION")
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            }
+        })
 
         val toolbar = findViewById<MaterialToolbar>(R.id.mealToolbar)
         toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -117,6 +138,7 @@ class MealRecognitionActivity : AppCompatActivity() {
             .addOnSuccessListener { labels ->
                 if (labels.isEmpty()) {
                     mealRecognitionResult.text = "Could not identify meal from this photo."
+                    addToLogButton.visibility = View.GONE
                     return@addOnSuccessListener
                 }
 
@@ -128,6 +150,8 @@ class MealRecognitionActivity : AppCompatActivity() {
                 latestDetectedMealName = bestLabel
                 latestEstimatedCalories = estimatedCalories
                 latestProtein = estimateProtein(estimatedCalories)
+                latestCarbs = estimateCarbs(estimatedCalories)
+                latestFats = estimateFats(estimatedCalories)
 
                 val confidenceText = top.joinToString("\n") {
                     "- ${it.text} (${(it.confidence * 100).toInt()}%)"
@@ -135,9 +159,10 @@ class MealRecognitionActivity : AppCompatActivity() {
 
                 confidenceChip.text = "${getString(R.string.confidence_label)}: $confidence%"
                 proteinMacroText.text = "${getString(R.string.macro_protein)}: ${latestProtein}g"
-                carbsMacroText.text = "${getString(R.string.macro_carbs)}: ${estimateCarbs(estimatedCalories)}g"
-                fatsMacroText.text = "${getString(R.string.macro_fats)}: ${estimateFats(estimatedCalories)}g"
+                carbsMacroText.text = "${getString(R.string.macro_carbs)}: ${latestCarbs}g"
+                fatsMacroText.text = "${getString(R.string.macro_fats)}: ${latestFats}g"
                 addToLogButton.visibility = View.VISIBLE
+                addToLogButton.isEnabled = true
 
                 mealRecognitionResult.text =
                     "Most likely: $bestLabel\nEstimated calories: ~$estimatedCalories kcal\n\nDetected labels:\n$confidenceText"
@@ -189,15 +214,35 @@ class MealRecognitionActivity : AppCompatActivity() {
 
         val mealName = "AI: $latestDetectedMealName"
         val item = ExtraMealItem(
-            id = "${today}-FOOD-$mealName",
+            id = "${today}-FOOD-$mealName-${System.currentTimeMillis()}",
             date = today,
             text = mealName,
             calories = latestEstimatedCalories,
             protein = latestProtein
         )
-        planRepository.addExtraMealItem(item)
-        planRepository.addCaloriesToDailyLog(today, latestEstimatedCalories, latestProtein)
-        Toast.makeText(this, "Added to daily log", Toast.LENGTH_SHORT).show()
+
+        // Disable button immediately to prevent double-adds
+        addToLogButton.isEnabled = false
+
+        lifecycleScope.launch {
+            planRepository.addExtraMealItem(item)
+            planRepository.addCaloriesToDailyLog(today, latestEstimatedCalories, latestProtein)
+
+            // Sync to Firestore
+            firestoreRepository.addFoodToLog(
+                today, mealName, latestEstimatedCalories, latestProtein, latestCarbs, latestFats
+            )
+
+            Toast.makeText(this@MealRecognitionActivity, "\"$mealName\" added to daily log ✅", Toast.LENGTH_SHORT).show()
+            mealRecognitionResult.text = "✅ Added: $mealName (~$latestEstimatedCalories kcal)\n\nSelect another photo to analyze more meals."
+
+            // Reset state for next analysis
+            latestDetectedMealName = ""
+            latestEstimatedCalories = 0
+            latestProtein = 0
+            latestCarbs = 0
+            latestFats = 0
+        }
     }
 
     private fun setLoading(isLoading: Boolean) {

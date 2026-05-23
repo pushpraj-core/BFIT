@@ -46,6 +46,14 @@ class ScannerActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private var isAiMode = false
 
+    /** Lazy singleton — prevents re-creating the model on every capture */
+    private val geminiModel: GenerativeModel by lazy {
+        GenerativeModel(
+            modelName = "gemini-1.5-flash",
+            apiKey = BuildConfig.GEMINI_API_KEY
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScannerBinding.inflate(layoutInflater)
@@ -205,11 +213,6 @@ class ScannerActivity : AppCompatActivity() {
     private fun analyzeWithGemini(bitmap: Bitmap) {
         lifecycleScope.launch {
             try {
-                val generativeModel = GenerativeModel(
-                    modelName = "gemini-1.5-flash",
-                    apiKey = BuildConfig.GEMINI_API_KEY
-                )
-
                 val prompt = """
                     Analyze this food image. Estimate the nutritional information per serving.
                     Respond ONLY in this exact format (one line each, no extra text):
@@ -220,7 +223,7 @@ class ScannerActivity : AppCompatActivity() {
                     FATS: [number only in grams]
                 """.trimIndent()
 
-                val response = generativeModel.generateContent(
+                val response = geminiModel.generateContent(
                     content {
                         image(bitmap)
                         text(prompt)
@@ -233,11 +236,9 @@ class ScannerActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 Log.e(TAG, "Gemini analysis failed", e)
-                runOnUiThread {
-                    findViewById<ProgressBar>(R.id.aiLoadingIndicator).visibility = View.GONE
-                    findViewById<Button>(R.id.captureButton).isEnabled = true
-                    Toast.makeText(this@ScannerActivity, getString(R.string.ai_analysis_failed) + ": ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                findViewById<ProgressBar>(R.id.aiLoadingIndicator).visibility = View.GONE
+                findViewById<Button>(R.id.captureButton).isEnabled = true
+                Toast.makeText(this@ScannerActivity, getString(R.string.ai_analysis_failed) + ": ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

@@ -3,14 +3,17 @@ package com.example.bfit.database
 import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 /**
  * Repository layer for all local data operations.
- * Provides a clean API for Activities to interact with
- * Room database and SharedPreferences without directly
- * accessing DAOs or database instances.
+ * Provides a clean API for ViewModels/Activities to interact with
+ * Room database and SharedPreferences.
+ *
+ * All database operations are suspend functions that must be called
+ * from a coroutine scope (e.g., viewModelScope or lifecycleScope).
+ * This eliminates the previous runBlocking anti-pattern that caused ANR risk.
  */
 class PlanRepository(context: Context) {
 
@@ -29,16 +32,20 @@ class PlanRepository(context: Context) {
 
     // ─── Plan Item Completion ───
 
-    fun markPlanItemAsComplete(id: String, isCompleted: Boolean, calories: Int, protein: Int) {
-        runBlocking(Dispatchers.IO) {
+    /**
+     * Marks a plan item as complete/incomplete and updates daily nutrition totals.
+     * Must be called from a coroutine scope.
+     */
+    suspend fun markPlanItemAsComplete(id: String, isCompleted: Boolean, calories: Int, protein: Int) {
+        withContext(Dispatchers.IO) {
             planDao.insertPlanItemCompletion(PlanItemCompletion(id, isCompleted))
-            val date = id.split("-").firstOrNull()?.toLongOrNull() ?: return@runBlocking
+            val date = id.split("-").firstOrNull()?.toLongOrNull() ?: return@withContext
             updateNutrientsForDay(date, isCompleted, calories, protein)
         }
     }
 
-    fun isPlanItemComplete(id: String): Boolean {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun isPlanItemComplete(id: String): Boolean {
+        return withContext(Dispatchers.IO) {
             planDao.getPlanItemCompletion(id)?.isCompleted ?: false
         }
     }
@@ -49,12 +56,12 @@ class PlanRepository(context: Context) {
             val updatedCalories = if (isCompleted) {
                 dailyLog.totalCalories + calories
             } else {
-                dailyLog.totalCalories - calories
+                (dailyLog.totalCalories - calories).coerceAtLeast(0)
             }
             val updatedProtein = if (isCompleted) {
                 dailyLog.totalProtein + protein
             } else {
-                dailyLog.totalProtein - protein
+                (dailyLog.totalProtein - protein).coerceAtLeast(0)
             }
             val updatedLog = dailyLog.copy(totalCalories = updatedCalories, totalProtein = updatedProtein)
             planDao.insertDailyLog(updatedLog)
@@ -67,8 +74,8 @@ class PlanRepository(context: Context) {
 
     // ─── Daily Nutrition Logs ───
 
-    fun addCaloriesToDailyLog(date: Long, calories: Int, protein: Int) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun addCaloriesToDailyLog(date: Long, calories: Int, protein: Int) {
+        withContext(Dispatchers.IO) {
             val dailyLog = planDao.getDailyLog(date)
             if (dailyLog != null) {
                 val updatedLog = dailyLog.copy(
@@ -82,28 +89,28 @@ class PlanRepository(context: Context) {
         }
     }
 
-    fun getDailyLog(date: Long): DailyLog? {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getDailyLog(date: Long): DailyLog? {
+        return withContext(Dispatchers.IO) {
             planDao.getDailyLog(date)
         }
     }
 
-    fun updateDailyLog(date: Long, calories: Int, protein: Int) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun updateDailyLog(date: Long, calories: Int, protein: Int) {
+        withContext(Dispatchers.IO) {
             planDao.insertDailyLog(DailyLog(date, calories, protein))
         }
     }
 
     // ─── Extra Meal Items ───
 
-    fun addExtraMealItem(extraMealItem: ExtraMealItem) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun addExtraMealItem(extraMealItem: ExtraMealItem) {
+        withContext(Dispatchers.IO) {
             planDao.insertExtraMealItem(extraMealItem)
         }
     }
 
-    fun getExtraMealItems(date: Long): List<ExtraMealItem> {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getExtraMealItems(date: Long): List<ExtraMealItem> {
+        return withContext(Dispatchers.IO) {
             planDao.getExtraMealItems(date)
         }
     }
@@ -127,8 +134,8 @@ class PlanRepository(context: Context) {
 
     // ─── Weight Tracking ───
 
-    fun addWeightEntry(weight: Float, bmi: Float) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun addWeightEntry(weight: Float, bmi: Float) {
+        withContext(Dispatchers.IO) {
             val today = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
@@ -139,48 +146,48 @@ class PlanRepository(context: Context) {
         }
     }
 
-    fun getRecentWeightEntries(limit: Int = 30): List<WeightEntry> {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getRecentWeightEntries(limit: Int = 30): List<WeightEntry> {
+        return withContext(Dispatchers.IO) {
             planDao.getRecentWeightEntries(limit)
         }
     }
 
-    fun getLatestWeightEntry(): WeightEntry? {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getLatestWeightEntry(): WeightEntry? {
+        return withContext(Dispatchers.IO) {
             planDao.getLatestWeightEntry()
         }
     }
 
-    fun getWeightEntriesSince(startDate: Long): List<WeightEntry> {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getWeightEntriesSince(startDate: Long): List<WeightEntry> {
+        return withContext(Dispatchers.IO) {
             planDao.getWeightEntriesSince(startDate)
         }
     }
 
     // ─── Weight Log (for ProgressActivity) ───
 
-    fun addWeightLogEntry(date: Long, weightKg: Float) {
-        runBlocking(Dispatchers.IO) {
+    suspend fun addWeightLogEntry(date: Long, weightKg: Float) {
+        withContext(Dispatchers.IO) {
             planDao.insertWeightLogEntry(WeightLogEntry(date = date, weightKg = weightKg))
         }
     }
 
-    fun getWeightLogEntriesBetween(startDate: Long, endDate: Long): List<WeightLogEntry> {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getWeightLogEntriesBetween(startDate: Long, endDate: Long): List<WeightLogEntry> {
+        return withContext(Dispatchers.IO) {
             planDao.getWeightLogEntriesBetween(startDate, endDate)
         }
     }
 
-    fun getLatestWeightLogEntry(): WeightLogEntry? {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getLatestWeightLogEntry(): WeightLogEntry? {
+        return withContext(Dispatchers.IO) {
             planDao.getLatestWeightLogEntry()
         }
     }
 
     // ─── Weekly Progress Report ───
 
-    fun getWeeklyProgressReport(): WeeklyProgressReport {
-        return runBlocking(Dispatchers.IO) {
+    suspend fun getWeeklyProgressReport(): WeeklyProgressReport {
+        return withContext(Dispatchers.IO) {
             val calendar = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
