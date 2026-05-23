@@ -111,6 +111,10 @@ class ProgressActivity : AppCompatActivity() {
 
         addFirstWeightBtn.setOnClickListener {
             weightInput.requestFocus()
+            val scrollView = findViewById<android.widget.ScrollView>(R.id.progressScrollView)
+            scrollView.post {
+                scrollView.smoothScrollTo(0, weightInput.bottom)
+            }
         }
 
         saveWeightButton.setOnClickListener {

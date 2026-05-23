@@ -146,7 +146,9 @@ class PlannerActivity : AppCompatActivity() {
                 updateStreak()
             }
             Toast.makeText(this, "Day marked as complete! 🎉", Toast.LENGTH_SHORT).show()
-        }
+            binding.markDayCompleteBtn.text = "Day Completed ✅"
+            binding.markDayCompleteBtn.isEnabled = false
+            binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_success))
     }
 
     private fun setupBackNavigation() {
@@ -205,6 +207,8 @@ class PlannerActivity : AppCompatActivity() {
 
             // Show/hide empty state
             val emptyStateText = findViewById<TextView>(R.id.emptyStateText)
+            val isDayAlreadyComplete = planRepository.isDayComplete(date) || completedDates.contains(date)
+
             if (generatedPlan.isEmpty()) {
                 emptyStateText?.visibility = View.VISIBLE
                 emptyStateText?.text = if (exerciseOnlyMode) {
@@ -217,7 +221,16 @@ class PlannerActivity : AppCompatActivity() {
             } else {
                 emptyStateText?.visibility = View.GONE
                 binding.planRecyclerView.visibility = View.VISIBLE
-                binding.markDayCompleteBtn.isEnabled = true
+                
+                if (isDayAlreadyComplete) {
+                    binding.markDayCompleteBtn.text = "Day Completed ✅"
+                    binding.markDayCompleteBtn.isEnabled = false
+                    binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_success))
+                } else {
+                    binding.markDayCompleteBtn.text = getString(R.string.mark_day_complete)
+                    binding.markDayCompleteBtn.isEnabled = true
+                    binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_primary))
+                }
             }
 
             val finalPlanItems = generatedPlan.map { item ->

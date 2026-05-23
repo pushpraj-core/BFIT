@@ -12,6 +12,7 @@
         android:title="@string/progress_title" />
 
     <ScrollView
+        android:id="@+id/progressScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
