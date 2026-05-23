@@ -10,12 +10,12 @@
 -dontwarn com.google.firebase.**
 
 # ─── Firestore data classes ───
--keepclassmembers class com.example.bfit.database.** { *; }
--keepclassmembers class com.example.bfit.network.** { *; }
--keepclassmembers class com.example.bfit.PlanResult { *; }
--keepclassmembers class com.example.bfit.GroceryItem { *; }
--keepclassmembers class com.example.bfit.Supplement { *; }
--keepclassmembers class com.example.bfit.ChatMessage { *; }
+-keep class com.example.bfit.database.** { *; }
+-keep class com.example.bfit.network.** { *; }
+-keep class com.example.bfit.PlanResult { *; }
+-keep class com.example.bfit.GroceryItem { *; }
+-keep class com.example.bfit.Supplement { *; }
+-keep class com.example.bfit.ChatMessage { *; }
 
 # ─── Retrofit / OkHttp ───
 -dontwarn okhttp3.**
