@@ -216,6 +216,7 @@ GitHub Actions generates and attaches the APK artifact to the release.
 - Compile SDK: 36
 - Java/Kotlin target: 17
 - Room schema migration included up to DB version 5
+- ProGuard/R8: Strict data model rules (`@Keep`) configured for release stability.
 
 ## Testing and Validation Checklist
 
@@ -241,6 +242,9 @@ Before release or demo, validation typically covers:
 
 - Gemini responses fail:
    `gemini.apiKey` should be valid with required API access.
+
+- Release build crashes or data is missing:
+   Ensure `@Keep` annotations are applied to any newly added Firestore or API data models to prevent ProGuard/R8 from obfuscating them.
 
 ## Contribution
 
