@@ -54,25 +54,33 @@ class ChatActivity : AppCompatActivity() {
             loadChatHistory()
         }
 
-        // Initialize Gemini AI
+        // Initialize Gemini AI — build chat history including restored messages
         val generativeModel = GenerativeModel(
             modelName = "gemini-2.5-flash",
             apiKey = BuildConfig.GEMINI_API_KEY
         )
-        val chat = generativeModel.startChat(
-            history = listOf(
-                content(role = "user") {
-                    text("You are BFIT AI Coach — a helpful, friendly fitness and nutrition expert. " +
-                        "Provide practical advice about workouts, diet plans, calories, macros, supplements, " +
-                        "and healthy lifestyle. Keep responses concise and actionable. " +
-                        "Use emojis sparingly for a friendly tone.")
-                },
-                content(role = "model") {
-                    text("Got it! I'm your BFIT AI Coach 💪 I'll help you with fitness, nutrition, " +
-                        "and wellness advice. Ask me anything!")
-                }
-            )
+
+        // Build history from system prompt + any restored messages
+        val chatHistory = mutableListOf(
+            content(role = "user") {
+                text("You are BFIT AI Coach — a helpful, friendly fitness and nutrition expert. " +
+                    "Provide practical advice about workouts, diet plans, calories, macros, supplements, " +
+                    "and healthy lifestyle. Keep responses concise and actionable. " +
+                    "Use emojis sparingly for a friendly tone.")
+            },
+            content(role = "model") {
+                text("Got it! I'm your BFIT AI Coach 💪 I'll help you with fitness, nutrition, " +
+                    "and wellness advice. Ask me anything!")
+            }
         )
+
+        // Inject restored messages so the AI model has full conversation context
+        for (msg in chatMessages) {
+            val role = if (msg.isUser) "user" else "model"
+            chatHistory.add(content(role = role) { text(msg.text) })
+        }
+
+        val chat = generativeModel.startChat(history = chatHistory)
 
         // Send button
         binding.askButton.setOnClickListener {

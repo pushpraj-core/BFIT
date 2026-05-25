@@ -73,6 +73,7 @@ abstract class PlanDatabase : RoomDatabase() {
                     "plan_database"
                 )
                     .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

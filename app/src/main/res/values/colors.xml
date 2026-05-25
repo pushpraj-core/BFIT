@@ -15,6 +15,7 @@
     <color name="bfit_danger">#EF4444</color>
     <color name="bfit_info">#0EA5E9</color>
     <color name="bfit_chart_grid">#E5E7EB</color>
+    <color name="bfit_chart_text">#444444</color>
     <color name="bfit_surface_soft">#F8FAFC</color>
     <color name="bfit_surface_dark">#1C1B1F</color>
     <color name="bfit_on_surface">#1C1B1F</color>

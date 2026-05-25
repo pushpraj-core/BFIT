@@ -149,6 +149,7 @@ class PlannerActivity : AppCompatActivity() {
             binding.markDayCompleteBtn.text = "Day Completed ✅"
             binding.markDayCompleteBtn.isEnabled = false
             binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_success))
+        }
     }
 
     private fun setupBackNavigation() {

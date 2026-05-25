@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode overrides for colors that break in dark theme -->
+    <color name="bfit_chart_grid">#333333</color>
+    <color name="bfit_chart_text">#C0C0C0</color>
+    <color name="bfit_on_surface">#F3F4F6</color>
+    <color name="bfit_surface_soft">#1E1E1E</color>
+</resources>

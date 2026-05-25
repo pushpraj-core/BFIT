@@ -266,11 +266,33 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Validate numeric ranges
+            val ageVal = age.toIntOrNull()
+            val heightVal = height.toFloatOrNull()
+            val weightVal = weight.toFloatOrNull()
+
+            if (ageVal == null || ageVal < 1 || ageVal > 120) {
+                Toast.makeText(this, "Please enter a valid age (1-120)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (heightVal == null || heightVal <= 0) {
+                Toast.makeText(this, "Please enter a valid height", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (weightVal == null || weightVal < 10 || weightVal > 500) {
+                Toast.makeText(this, "Please enter a valid weight (10-500 kg)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (!isCm) {
-                height = (height.toFloat() * 30.48).toString()
+                height = (heightVal * 30.48).toString()
             }
 
             val h = height.toFloat() / 100
+            if (h <= 0) {
+                Toast.makeText(this, "Height must be greater than zero", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val w = weight.toFloat()
 
             val bmi = w / (h * h)
@@ -681,7 +703,13 @@ class MainActivity : AppCompatActivity() {
                         return@launch
                     }
 
-                    Toast.makeText(this@MainActivity, "Checking cloud for saved profile...", Toast.LENGTH_SHORT).show()
+                    // Check network before attempting cloud restore
+                    if (!NetworkUtils.isNetworkAvailable(this@MainActivity)) {
+                        showInputForm()
+                        return@launch
+                    }
+
+                    Toast.makeText(this@MainActivity, "Restoring your profile...", Toast.LENGTH_SHORT).show()
                     val profile = firestoreRepository.getUserProfile()
                     val remotePlan = firestoreRepository.getWorkoutPlan()
 
@@ -843,7 +871,7 @@ class MainActivity : AppCompatActivity() {
                     exerciseCard.visibility = View.GONE
                 }
 
-                // Calculate totals from meals
+                // Calculate totals from completed plan items + extra meals
                 var totalCalories = 0
                 var totalProtein = 0
                 val finalPlanItems = mealItems.map { item ->
@@ -858,10 +886,19 @@ class MainActivity : AppCompatActivity() {
                     }
                     item
                 }
-                planRepository.updateDailyLog(dayStart, totalCalories, totalProtein)
 
-                // Sync daily log to Firestore
-                firestoreRepository.saveDailyLog(dayStart, totalCalories, totalProtein)
+                // Include extra meal items in the daily total
+                for (extra in extraItems) {
+                    totalCalories += extra.calories
+                    totalProtein += extra.protein
+                }
+
+                // Only update if the calculated total differs from the stored value
+                val existingLog = planRepository.getDailyLog(dayStart)
+                if (existingLog == null || existingLog.totalCalories != totalCalories || existingLog.totalProtein != totalProtein) {
+                    planRepository.updateDailyLog(dayStart, totalCalories, totalProtein)
+                    firestoreRepository.saveDailyLog(dayStart, totalCalories, totalProtein)
+                }
 
                 updateDashboardCalories()
                 updateStreak()

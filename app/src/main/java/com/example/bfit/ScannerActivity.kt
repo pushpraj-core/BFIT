@@ -296,6 +296,11 @@ class ScannerActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
         barcodeScanner.close()
+
+        // Clean up temporary food capture files
+        cacheDir.listFiles()?.filter { it.name.startsWith("food_capture_") }?.forEach {
+            it.delete()
+        }
     }
 
     companion object {

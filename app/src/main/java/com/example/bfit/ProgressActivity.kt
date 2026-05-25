@@ -133,6 +133,8 @@ class ProgressActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 planRepository.addWeightLogEntry(todayStart, enteredWeight)
+                // Also save to primary weight tracking table to keep both systems in sync
+                planRepository.addWeightEntry(enteredWeight, 0f)
                 weightInput.setText("")
 
                 // Also sync to Firestore
@@ -179,7 +181,7 @@ class ProgressActivity : AppCompatActivity() {
         weightChart.description.isEnabled = false
         weightChart.legend.isEnabled = false
         weightChart.setNoDataText("No weight logs yet")
-        weightChart.setNoDataTextColor(Color.DKGRAY)
+        weightChart.setNoDataTextColor(getColor(R.color.bfit_chart_text))
         weightChart.setTouchEnabled(true)
         weightChart.setPinchZoom(false)
         weightChart.setScaleEnabled(false)
@@ -191,12 +193,12 @@ class ProgressActivity : AppCompatActivity() {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.textColor = Color.DKGRAY
+        xAxis.textColor = getColor(R.color.bfit_chart_text)
 
         val yAxisLeft = weightChart.axisLeft
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.gridColor = getColor(R.color.bfit_chart_grid)
-        yAxisLeft.textColor = Color.DKGRAY
+        yAxisLeft.textColor = getColor(R.color.bfit_chart_text)
         yAxisLeft.axisMinimum = 0f
 
         weightChart.axisRight.isEnabled = false
@@ -288,7 +290,7 @@ class ProgressActivity : AppCompatActivity() {
             circleRadius = 4f
             setDrawCircleHole(false)
             setDrawValues(false)
-            highLightColor = Color.parseColor("#111827")
+            highLightColor = getColor(R.color.bfit_chart_text)
             setDrawHorizontalHighlightIndicator(false)
         }
 
