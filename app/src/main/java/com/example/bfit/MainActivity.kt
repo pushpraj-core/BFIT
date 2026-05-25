@@ -275,11 +275,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter a valid age (1-120)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (heightVal == null || heightVal <= 0) {
+            if (heightVal == null || heightVal <= 0f) {
                 Toast.makeText(this, "Please enter a valid height", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (weightVal == null || weightVal < 10 || weightVal > 500) {
+            if (weightVal == null || weightVal < 10f || weightVal > 500f) {
                 Toast.makeText(this, "Please enter a valid weight (10-500 kg)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
