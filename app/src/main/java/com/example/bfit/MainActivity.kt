@@ -672,7 +672,57 @@ class MainActivity : AppCompatActivity() {
             currentGoal = sharedPreferences.getString("currentGoal", "") ?: ""
             showDashboard()
         } else {
-            showInputForm()
+            // No local plan — try restoring from Cloud
+            lifecycleScope.launch {
+                try {
+                    val isDemoMode = sharedPreferences.getBoolean(LoginActivity.DEMO_MODE_KEY, false)
+                    if (isDemoMode) {
+                        showInputForm()
+                        return@launch
+                    }
+
+                    Toast.makeText(this@MainActivity, "Checking cloud for saved profile...", Toast.LENGTH_SHORT).show()
+                    val profile = firestoreRepository.getUserProfile()
+                    val remotePlan = firestoreRepository.getWorkoutPlan()
+
+                    if (profile != null && remotePlan != null) {
+                        val age = profile["age"]?.toString() ?: "25"
+                        val height = profile["height"]?.toString() ?: "170"
+                        val weight = profile["weight"]?.toString() ?: "70"
+                        val gender = profile["gender"]?.toString() ?: "Male"
+                        val diet = profile["diet"]?.toString() ?: "Non-Veg"
+                        val goal = profile["healthGoal"]?.toString() ?: "Maintain"
+                        val allergies = profile["allergies"]?.toString() ?: ""
+                        val isLactoseIntolerant = profile["isLactoseIntolerant"] as? Boolean ?: false
+
+                        val category = remotePlan["category"]?.toString() ?: ""
+                        val calories = (remotePlan["calories"] as? Number)?.toInt() ?: 2000
+                        val totalProtein = (remotePlan["totalProtein"] as? Number)?.toInt() ?: 100
+                        val exercises = remotePlan["exercises"]?.toString() ?: ""
+                        val mealPlanJson = remotePlan["mealPlan"]?.toString() ?: "{}"
+
+                        val mapType = object : TypeToken<Map<String, List<Triple<String, Int, Int>>>>() {}.type
+                        val mealPlan: Map<String, List<Triple<String, Int, Int>>> = gson.fromJson(mealPlanJson, mapType) ?: emptyMap()
+
+                        val planResult = PlanResult(category, calories, totalProtein, mealPlan, exercises)
+
+                        val h = height.toFloat() / 100
+                        val w = weight.toFloat()
+                        currentBmi = if (h > 0) w / (h * h) else 0f
+                        currentGoal = goal
+                        currentPlan = planResult
+
+                        saveUserData(age, height, weight, gender, diet, goal, allergies, isLactoseIntolerant, planResult)
+
+                        Toast.makeText(this@MainActivity, "Profile restored from cloud! ✅", Toast.LENGTH_SHORT).show()
+                        showDashboard()
+                    } else {
+                        showInputForm()
+                    }
+                } catch (e: Exception) {
+                    showInputForm()
+                }
+            }
         }
     }
 
