@@ -49,7 +49,7 @@ class ScannerActivity : AppCompatActivity() {
     /** Lazy singleton — prevents re-creating the model on every capture */
     private val geminiModel: GenerativeModel by lazy {
         GenerativeModel(
-            modelName = "gemini-1.5-flash",
+            modelName = "gemini-2.5-flash",
             apiKey = BuildConfig.GEMINI_API_KEY
         )
     }
