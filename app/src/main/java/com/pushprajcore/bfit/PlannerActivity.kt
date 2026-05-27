@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pushprajcore.bfit.database.PlanRepository
 import com.pushprajcore.bfit.databinding.ActivityPlannerBinding
 import kotlinx.coroutines.launch
-import java.io.Serializable
+import android.os.Parcelable
 import java.util.Calendar
 
 class PlannerActivity : AppCompatActivity() {
@@ -38,7 +38,7 @@ class PlannerActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
-        val planResult = getSerializable(intent, "plan", PlanResult::class.java)
+        val planResult = getParcelableExtra(intent, "plan", PlanResult::class.java)
         exerciseOnlyMode = intent.getBooleanExtra("openExerciseOnly", false)
 
         if (exerciseOnlyMode) {
@@ -254,11 +254,11 @@ class PlannerActivity : AppCompatActivity() {
     }
 
     @Suppress("DEPRECATION")
-    private fun <T : Serializable?> getSerializable(intent: android.content.Intent, key: String, clazz: Class<T>): T? {
+    private fun <T : Parcelable> getParcelableExtra(intent: android.content.Intent, key: String, clazz: Class<T>): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(key, clazz)
+            intent.getParcelableExtra(key, clazz)
         } else {
-            intent.getSerializableExtra(key) as? T
+            intent.getParcelableExtra(key) as? T
         }
     }
 }

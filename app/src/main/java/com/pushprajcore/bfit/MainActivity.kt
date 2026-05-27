@@ -40,20 +40,24 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.Calendar
 import java.util.Locale
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MealEntry(
     val name: String,
     val calories: Int,
     val protein: Int
-) : Serializable
+) : Parcelable
 
+@Parcelize
 data class PlanResult(
     val category: String,
     val calories: Int,
     val totalProtein: Int,
     val mealPlan: Map<String, List<MealEntry>>,
     val exercises: String
-) : Serializable
+) : Parcelable
 
 class MainActivity : AppCompatActivity() {
 

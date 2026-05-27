@@ -70,7 +70,8 @@ class StoreActivity : AppCompatActivity() {
                     )
                 }
             } else {
-                getDefaultSupplements()
+                Toast.makeText(this@StoreActivity, "No products available at the moment.", Toast.LENGTH_SHORT).show()
+                emptyList()
             }
             supplementsRecyclerView.adapter = SupplementsAdapter(supplements) { supplement ->
                 if (supplement.url.isNotEmpty()) {
@@ -110,16 +111,7 @@ class StoreActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDefaultSupplements(): List<Supplement> {
-        val amazonUrl = "https://www.amazon.com/s?k=" // Global Amazon search redirect
-        return listOf(
-            Supplement("on_whey", "Optimum Nutrition Gold Standard Whey", "Top-rated protein powder for muscle recovery.", 34.99, "${amazonUrl}optimum+nutrition+gold+standard+whey"),
-            Supplement("muscletech_creatine", "MuscleTech Platinum Creatine", "Highly pure micronized creatine for performance.", 19.99, "${amazonUrl}muscletech+platinum+creatine"),
-            Supplement("muscleblaze_bcaas", "MuscleBlaze BCAA Powder", "Intra-workout support for muscle recovery.", 24.99, "${amazonUrl}muscleblaze+bcaa"),
-            Supplement("c4_pre", "Cellucor C4 Pre-Workout", "The original explosive pre-workout energy.", 29.99, "${amazonUrl}cellucor+c4+pre+workout"),
-            Supplement("multivitamin", "Garden of Life Multivitamin", "Organic whole food multivitamin for daily health.", 14.99, "${amazonUrl}garden+of+life+multivitamin")
-        )
-    }
+    // Default hardcoded supplements removed
 }
 
 class SupplementsAdapter(
