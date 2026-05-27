@@ -13,9 +13,9 @@ class PlanResultTest {
     fun planResult_creation() {
         val mealPlan = mapOf(
             "1" to listOf(
-                Triple("Oatmeal with Banana", 350, 12),
-                Triple("Grilled Chicken Salad", 450, 35),
-                Triple("Salmon with Rice", 600, 40)
+                MealEntry("Oatmeal with Banana", 350, 12),
+                MealEntry("Grilled Chicken Salad", 450, 35),
+                MealEntry("Salmon with Rice", 600, 40)
             )
         )
         val plan = PlanResult(
@@ -35,9 +35,9 @@ class PlanResultTest {
     fun planResult_mealPlan_has7Days() {
         val mealPlan = (1..7).associate { day ->
             day.toString() to listOf(
-                Triple("Breakfast $day", 300, 15),
-                Triple("Lunch $day", 500, 30),
-                Triple("Dinner $day", 600, 35)
+                MealEntry("Breakfast $day", 300, 15),
+                MealEntry("Lunch $day", 500, 30),
+                MealEntry("Dinner $day", 600, 35)
             )
         }
         val plan = PlanResult("Normal Weight", 2500, 120, mealPlan, "")
@@ -84,12 +84,12 @@ class PlanResultTest {
     fun totalProtein_calculatedFromAllMeals() {
         val mealPlan = (1..7).associate { day ->
             day.toString() to listOf(
-                Triple("B", 300, 15),
-                Triple("L", 500, 30),
-                Triple("D", 600, 35)
+                MealEntry("B", 300, 15),
+                MealEntry("L", 500, 30),
+                MealEntry("D", 600, 35)
             )
         }
-        val totalProtein = mealPlan.values.flatten().sumOf { it.third }
+        val totalProtein = mealPlan.values.flatten().sumOf { it.protein }
         // 7 days * (15 + 30 + 35) = 7 * 80 = 560
         assertEquals(560, totalProtein)
     }
