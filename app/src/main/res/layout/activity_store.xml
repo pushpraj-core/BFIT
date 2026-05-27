@@ -59,9 +59,18 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/supplementsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_supplement" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/seeMoreAmazonBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="See Millions More on Amazon"
+            android:layout_marginTop="16dp"
+            app:icon="@android:drawable/ic_menu_search" />
 
     </LinearLayout>
 

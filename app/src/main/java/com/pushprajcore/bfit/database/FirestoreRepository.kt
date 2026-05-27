@@ -262,6 +262,17 @@ class FirestoreRepository {
         }
     }
 
+    suspend fun addSupplement(supplementData: Map<String, Any>) {
+        try {
+            firestore.collection(SUPPLEMENTS_COLLECTION)
+                .add(supplementData)
+                .await()
+            Log.d(TAG, "Supplement added successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error adding supplement", e)
+        }
+    }
+
     suspend fun recordPurchase(supplementName: String, supplementId: String, price: Double) {
         val uid = currentUserId ?: return
         try {

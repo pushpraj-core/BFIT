@@ -56,8 +56,15 @@ class StoreActivity : AppCompatActivity() {
 
         val supplementsRecyclerView = findViewById<RecyclerView>(R.id.supplementsRecyclerView)
 
+        // See More Amazon Button
+        findViewById<Button>(R.id.seeMoreAmazonBtn).setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.amazon.com/s?k=fitness+supplements"))
+            startActivity(intent)
+        }
+
         // Try loading from Firestore first, fall back to defaults
         lifecycleScope.launch {
+            seedDatabaseIfNeeded()
             val firestoreSupplements = firestoreRepository.getSupplements()
             val supplements = if (firestoreSupplements.isNotEmpty()) {
                 firestoreSupplements.map { data ->
@@ -112,6 +119,27 @@ class StoreActivity : AppCompatActivity() {
     }
 
     // Default hardcoded supplements removed
+
+    private suspend fun seedDatabaseIfNeeded() {
+        val supplements = firestoreRepository.getSupplements()
+        if (supplements.isEmpty()) {
+            val seedItems = listOf(
+                mapOf("id" to "seed1", "name" to "Optimum Nutrition Gold Standard 100% Whey", "description" to "Muscle building whey protein powder.", "price" to 44.99, "url" to "https://www.amazon.com/s?k=optimum+nutrition+whey+protein"),
+                mapOf("id" to "seed2", "name" to "Cellucor C4 Original Pre Workout", "description" to "Explosive energy and performance.", "price" to 29.99, "url" to "https://www.amazon.com/s?k=c4+pre+workout"),
+                mapOf("id" to "seed3", "name" to "BSN SYNTHA-6 Whey Protein Powder", "description" to "Cold stone creamery mint chocolate chip.", "price" to 54.99, "url" to "https://www.amazon.com/s?k=bsn+syntha-6"),
+                mapOf("id" to "seed4", "name" to "MuscleTech Platinum Creatine", "description" to "100% pure micronized creatine powder.", "price" to 19.99, "url" to "https://www.amazon.com/s?k=muscletech+creatine"),
+                mapOf("id" to "seed5", "name" to "Liquid I.V. Hydration Multiplier", "description" to "Electrolyte drink mix.", "price" to 24.99, "url" to "https://www.amazon.com/s?k=liquid+iv"),
+                mapOf("id" to "seed6", "name" to "XTEND Original BCAA Powder", "description" to "Branched chain amino acids for recovery.", "price" to 27.99, "url" to "https://www.amazon.com/s?k=xtend+bcaa"),
+                mapOf("id" to "seed7", "name" to "Animal Pak", "description" to "Vitamin pack supplement for sports nutrition.", "price" to 34.99, "url" to "https://www.amazon.com/s?k=animal+pak"),
+                mapOf("id" to "seed8", "name" to "Orgain Organic Vegan Protein Powder", "description" to "Plant based protein powder.", "price" to 29.99, "url" to "https://www.amazon.com/s?k=orgain+vegan+protein"),
+                mapOf("id" to "seed9", "name" to "Ghost Legend Pre-Workout", "description" to "Energy and focus with authentic flavor collabs.", "price" to 44.99, "url" to "https://www.amazon.com/s?k=ghost+pre+workout"),
+                mapOf("id" to "seed10", "name" to "Quest Nutrition Protein Bar", "description" to "High protein, low carb gluten free bars.", "price" to 23.99, "url" to "https://www.amazon.com/s?k=quest+protein+bar")
+            )
+            for (item in seedItems) {
+                firestoreRepository.addSupplement(item)
+            }
+        }
+    }
 }
 
 class SupplementsAdapter(
