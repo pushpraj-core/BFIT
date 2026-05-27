@@ -1,4 +1,4 @@
-package com.example.bfit
+package com.pushprajcore.bfit
 
 import org.junit.Test
 

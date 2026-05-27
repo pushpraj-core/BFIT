@@ -4,11 +4,12 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
     id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.bfit"
+    namespace = "com.pushprajcore.bfit"
     compileSdk = 36
 
     val keystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
@@ -17,7 +18,7 @@ android {
     val keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
 
     defaultConfig {
-        applicationId = "com.example.bfit"
+        applicationId = "com.pushprajcore.bfit"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -96,6 +97,9 @@ dependencies {
     // Splash Screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    // Crashlytics
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+
     // Firebase BOM (manages all Firebase versions)
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-firestore-ktx")
@@ -122,12 +126,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
     // Gemini AI
-    implementation("com.google.ai.client.generativeai:generativeai:0.5.0")
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     // Room (local cache)
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
+
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 
     // Charts
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")

@@ -241,7 +241,7 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp" />
 
-                    <com.example.bfit.charts.CalorieBarChartView
+                    <com.pushprajcore.bfit.charts.CalorieBarChartView
                         android:id="@+id/calorieBarChart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -307,7 +307,7 @@
                             tools:text="📉 -0.5 kg" />
                     </LinearLayout>
 
-                    <com.example.bfit.charts.WeightLineChartView
+                    <com.pushprajcore.bfit.charts.WeightLineChartView
                         android:id="@+id/weightLineChart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
