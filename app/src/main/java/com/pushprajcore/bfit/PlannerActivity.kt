@@ -35,7 +35,7 @@ class PlannerActivity : AppCompatActivity() {
         // Back button
         binding.backButton.setOnClickListener {
             finish()
-            overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         val planResult = getSerializable(intent, "plan", PlanResult::class.java)
@@ -156,7 +156,7 @@ class PlannerActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
-                overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             }
         })
     }
