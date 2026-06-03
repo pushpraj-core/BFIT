@@ -13,7 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.pushprajcore.bfit.databinding.ActivityGroceryListBinding
-import java.io.Serializable
+import android.os.Parcelable
 
 data class GroceryItem(
     val name: String,
@@ -38,7 +38,7 @@ class GroceryListActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
-        val planResult = getSerializable(intent, "plan", PlanResult::class.java)
+        val planResult = getParcelableExtra(intent, "plan", PlanResult::class.java)
 
         if (planResult == null) {
             Toast.makeText(this, "Generate a plan first to see your grocery list", Toast.LENGTH_LONG).show()
@@ -239,11 +239,11 @@ class GroceryListActivity : AppCompatActivity() {
     }
 
     @Suppress("DEPRECATION")
-    private fun <T : Serializable?> getSerializable(intent: android.content.Intent, key: String, clazz: Class<T>): T? {
+    private fun <T : Parcelable> getParcelableExtra(intent: android.content.Intent, key: String, clazz: Class<T>): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra(key, clazz)
+            intent.getParcelableExtra(key, clazz)
         } else {
-            intent.getSerializableExtra(key) as? T
+            intent.getParcelableExtra(key) as? T
         }
     }
 }
