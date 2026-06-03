@@ -64,7 +64,7 @@ class ScannerActivity : AppCompatActivity() {
         // Close button
         findViewById<Button>(R.id.closeButton).setOnClickListener {
             finish()
-            overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         // Mode toggle button

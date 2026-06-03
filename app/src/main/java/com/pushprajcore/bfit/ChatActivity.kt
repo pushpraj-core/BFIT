@@ -34,7 +34,7 @@ class ChatActivity : AppCompatActivity() {
         // Back button
         binding.backButton.setOnClickListener {
             finish()
-            overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         // Setup RecyclerView
@@ -138,7 +138,7 @@ class ChatActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
-                overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             }
         })
     }

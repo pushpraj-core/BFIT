@@ -35,7 +35,7 @@ class GroceryListActivity : AppCompatActivity() {
         // Back button
         binding.backButton.setOnClickListener {
             finish()
-            overrideTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         val planResult = getSerializable(intent, "plan", PlanResult::class.java)
@@ -83,7 +83,7 @@ class GroceryListActivity : AppCompatActivity() {
 
     private fun generateGroceryList(plan: PlanResult) {
         // Extract all unique meal names from the 7-day plan
-        val allMeals = plan.mealPlan.values.flatten().map { it.first }
+        val allMeals = plan.mealPlan.values.flatten().map { it.name }
         val uniqueMeals = allMeals.toSet()
 
         // Parse ingredients from meal names and categorize

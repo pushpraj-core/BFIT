@@ -41,6 +41,12 @@ import java.io.Serializable
 import java.util.Calendar
 import java.util.Locale
 
+data class MealEntry(
+    val name: String,
+    val calories: Int,
+    val protein: Int
+) : Serializable
+
 data class PlanResult(
     val category: String,
     val calories: Int,
@@ -189,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("plan", currentPlan)
         intent.putExtra("selectedDate", date)
         startActivity(intent)
-        overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -205,7 +211,7 @@ class MainActivity : AppCompatActivity() {
         val isDemoMode = sharedPreferences.getBoolean(LoginActivity.DEMO_MODE_KEY, false)
         if (auth.currentUser == null && !isDemoMode) {
             startActivity(Intent(this, LoginActivity::class.java))
-            overrideTransition(R.anim.fade_in, R.anim.fade_out)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             finish()
             return
         }
@@ -335,7 +341,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, PlannerActivity::class.java)
             intent.putExtra("plan", currentPlan)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Feature card: Scan
@@ -349,7 +355,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, GroceryListActivity::class.java)
                 intent.putExtra("plan", currentPlan)
                 startActivity(intent)
-                overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             } else {
                 Toast.makeText(this, "Generate a plan first!", Toast.LENGTH_SHORT).show()
             }
@@ -361,7 +367,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("targetCalories", currentPlan?.calories ?: 2000)
             intent.putExtra("targetProtein", currentPlan?.totalProtein ?: 100)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Feature card: Weight
@@ -373,7 +379,7 @@ class MainActivity : AppCompatActivity() {
         dashboardView.findViewById<View>(R.id.storeCard).setOnClickListener {
             val intent = Intent(this, StoreActivity::class.java)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Custom meal FAB
@@ -386,20 +392,20 @@ class MainActivity : AppCompatActivity() {
         dashboardView.findViewById<View>(R.id.progressCard).setOnClickListener {
             val intent = Intent(this, ProgressActivity::class.java)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Feature card: AI Meal Recognition
         dashboardView.findViewById<View>(R.id.aiMealCard).setOnClickListener {
             val intent = Intent(this, MealRecognitionActivity::class.java)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         fabChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
-            overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         // Logout button - Firebase sign out
@@ -412,7 +418,7 @@ class MainActivity : AppCompatActivity() {
                     auth.signOut()
                     clearUserData()
                     startActivity(Intent(this, LoginActivity::class.java))
-                    overrideTransition(R.anim.fade_in, R.anim.fade_out)
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                     finish()
                 }
                 .setNegativeButton("Cancel", null)
@@ -431,7 +437,7 @@ class MainActivity : AppCompatActivity() {
     private fun launchScanner() {
         val intent = Intent(this, ScannerActivity::class.java)
         scannerLauncher.launch(intent)
-        overrideTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun showProfileDialog() {
@@ -682,6 +688,75 @@ class MainActivity : AppCompatActivity() {
             putString("plan", gson.toJson(plan))
             putFloat("bmi", currentBmi)
             putString("currentGoal", currentGoal)
+        }
+    }
+
+    private fun loadUserData() {
+        val planJson = sharedPreferences.getString("plan", null)
+        if (planJson != null) {
+            val type = object : TypeToken<PlanResult>() {}.type
+            currentPlan = gson.fromJson(planJson, type)
+            currentBmi = sharedPreferences.getFloat("bmi", 0f)
+            currentGoal = sharedPreferences.getString("currentGoal", "") ?: ""
+            showDashboard()
+        } else {
+            // No local plan — try restoring from Cloud
+            lifecycleScope.launch {
+                try {
+                    val isDemoMode = sharedPreferences.getBoolean(LoginActivity.DEMO_MODE_KEY, false)
+                    if (isDemoMode) {
+                        showInputForm()
+                        return@launch
+                    }
+
+                    // Check network before attempting cloud restore
+                    if (!NetworkUtils.isNetworkAvailable(this@MainActivity)) {
+                        showInputForm()
+                        return@launch
+                    }
+
+                    Toast.makeText(this@MainActivity, "Restoring your profile...", Toast.LENGTH_SHORT).show()
+                    val profile = firestoreRepository.getUserProfile()
+                    val remotePlan = firestoreRepository.getWorkoutPlan()
+
+                    if (profile != null && remotePlan != null) {
+                        val age = profile["age"]?.toString() ?: "25"
+                        val height = profile["height"]?.toString() ?: "170"
+                        val weight = profile["weight"]?.toString() ?: "70"
+                        val gender = profile["gender"]?.toString() ?: "Male"
+                        val diet = profile["diet"]?.toString() ?: "Non-Veg"
+                        val goal = profile["healthGoal"]?.toString() ?: "Maintain"
+                        val allergies = profile["allergies"]?.toString() ?: ""
+                        val isLactoseIntolerant = profile["isLactoseIntolerant"] as? Boolean ?: false
+
+                        val category = remotePlan["category"]?.toString() ?: ""
+                        val calories = (remotePlan["calories"] as? Number)?.toInt() ?: 2000
+                        val totalProtein = (remotePlan["totalProtein"] as? Number)?.toInt() ?: 100
+                        val exercises = remotePlan["exercises"]?.toString() ?: ""
+                        val mealPlanJson = remotePlan["mealPlan"]?.toString() ?: "{}"
+
+                        val mapType = object : TypeToken<Map<String, List<MealEntry>>>() {}.type
+                        val mealPlan: Map<String, List<MealEntry>> = gson.fromJson(mealPlanJson, mapType) ?: emptyMap()
+
+                        val planResult = PlanResult(category, calories, totalProtein, mealPlan, exercises)
+
+                        val h = height.toFloat() / 100
+                        val w = weight.toFloat()
+                        currentBmi = if (h > 0) w / (h * h) else 0f
+                        currentGoal = goal
+                        currentPlan = planResult
+
+                        saveUserData(age, height, weight, gender, diet, goal, allergies, isLactoseIntolerant, planResult)
+
+                        Toast.makeText(this@MainActivity, "Profile restored from cloud! ✅", Toast.LENGTH_SHORT).show()
+                        showDashboard()
+                    } else {
+                        showInputForm()
+                    }
+                } catch (e: Exception) {
+                    showInputForm()
+                }
+            }
         }
     }
 
@@ -944,25 +1019,29 @@ class MainActivity : AppCompatActivity() {
         val filteredDinners = filter(dinnerOptions).shuffled()
 
         /**
-         * Parse a meal string from resources into a Triple<Name, Calories, Protein>.
+         * Parse a meal string from resources into a MealEntry.
          * Expected format: "Name|Portion|Calories|Protein"
          * Falls back safely if format is unexpected.
          */
         fun parseMealString(raw: Any?, fallbackName: String, fallbackCal: Int, fallbackProtein: Int): MealEntry {
             return when (raw) {
+                is MealEntry -> raw
                 is Triple<*, *, *> -> {
-                    @Suppress("UNCHECKED_CAST")
-                    raw as MealEntry
+                    MealEntry(
+                        raw.first as? String ?: fallbackName,
+                        raw.second as? Int ?: fallbackCal,
+                        raw.third as? Int ?: fallbackProtein
+                    )
                 }
                 is String -> {
                     val parts = raw.split("|")
-                    Triple(
+                    MealEntry(
                         parts.getOrElse(0) { fallbackName }.trim(),
                         parts.getOrNull(2)?.trim()?.toIntOrNull() ?: fallbackCal,
                         parts.getOrNull(3)?.trim()?.toIntOrNull() ?: fallbackProtein
                     )
                 }
-                else -> Triple(fallbackName, fallbackCal, fallbackProtein)
+                else -> MealEntry(fallbackName, fallbackCal, fallbackProtein)
             }
         }
 
@@ -983,7 +1062,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        val totalProtein = mealPlan.values.flatten().sumOf { it.third }
+        val totalProtein = mealPlan.values.flatten().sumOf { it.protein }
 
         val category = when {
             bmi < 18.5 -> "Underweight"
