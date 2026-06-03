@@ -34,6 +34,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -375,17 +376,7 @@ class MainActivity : AppCompatActivity() {
             launchScanner()
         }
 
-        // Feature card: Groceries
-        dashboardView.findViewById<View>(R.id.groceryCard).setOnClickListener {
-            if (currentPlan != null) {
-                val intent = Intent(this, GroceryListActivity::class.java)
-                intent.putExtra("plan", currentPlan)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            } else {
-                Toast.makeText(this, "Generate a plan first!", Toast.LENGTH_SHORT).show()
-            }
-        }
+
 
         // Feature card: Report
         dashboardView.findViewById<View>(R.id.reportCard).setOnClickListener {

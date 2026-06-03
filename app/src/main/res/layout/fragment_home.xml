@@ -579,40 +579,7 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/groceryCard"
-                        style="@style/Widget.BFIT.Card"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginHorizontal="6dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:rippleColor="?attr/colorPrimary">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="@dimen/space_md">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_baseline_flag_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="@dimen/space_xs"
-                                android:contentDescription="Groceries" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Groceries"
-                                android:textAppearance="?attr/textAppearanceLabelLarge"
-                                android:gravity="center" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/scanCard"
