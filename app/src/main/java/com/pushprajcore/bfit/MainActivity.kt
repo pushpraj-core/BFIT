@@ -32,7 +32,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
@@ -219,6 +219,25 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             finish()
             return
+        }
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.selectedItemId = R.id.nav_home
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_exercise -> {
+                    startActivity(Intent(this, ExerciseActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    false
+                }
+                R.id.nav_profile -> {
+                    // Placeholder for future profile activity
+                    Toast.makeText(this, "Profile coming soon", Toast.LENGTH_SHORT).show()
+                    false
+                }
+                else -> false
+            }
         }
 
         inputForm = findViewById(R.id.inputForm)
@@ -782,6 +801,9 @@ class MainActivity : AppCompatActivity() {
         inputForm.visibility = View.GONE
         dashboardView.visibility = View.VISIBLE
         dashboardView.scheduleLayoutAnimation()
+
+        // Ensure bottom nav is correct when returning
+        findViewById<BottomNavigationView>(R.id.bottom_navigation)?.selectedItemId = R.id.nav_home
 
         // Show welcome message with user name
         val welcomeText = dashboardView.findViewById<TextView>(R.id.welcomeText)

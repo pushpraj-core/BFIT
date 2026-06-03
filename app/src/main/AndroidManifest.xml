@@ -55,6 +55,16 @@
         <activity
             android:name=".MealRecognitionActivity"
             android:exported="false" />
+        <activity
+            android:name=".ExerciseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BFIT" />
+            
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BFIT" />
+            
     </application>
 
 </manifest>
