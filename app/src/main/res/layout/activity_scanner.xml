@@ -10,15 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Top bar with close button + mode toggle -->
+    <!-- Top bar — glass-style dark overlay -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8dp"
-        android:background="#80000000"
+        android:padding="@dimen/space_xs"
+        android:background="#99080B14"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
@@ -37,6 +37,7 @@
             android:text="@string/scanner_title"
             android:textColor="@android:color/white"
             android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textStyle="bold"
             android:paddingStart="4dp"
             android:paddingEnd="8dp" />
 
@@ -68,13 +69,13 @@
     <!-- Capture Button for AI mode -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/captureButton"
-        style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:text="📸 Snap Food"
         android:textColor="@android:color/white"
         android:visibility="gone"
+        app:backgroundTint="@color/bfit_primary"
         app:cornerRadius="24dp"
         app:icon="@drawable/ic_baseline_camera_alt_24"
         app:iconTint="@android:color/white"
@@ -83,13 +84,13 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
-    <!-- Scan hint at the bottom -->
+    <!-- Scan hint at the bottom — glass card -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="@dimen/card_corner"
+        app:cardElevation="@dimen/card_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -100,14 +101,14 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
+            android:paddingVertical="@dimen/space_sm">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_baseline_qr_code_scanner_24"
                 app:tint="?attr/colorPrimary"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/space_xs"
                 android:contentDescription="Scan" />
 
             <TextView

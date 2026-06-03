@@ -4,5 +4,10 @@
     <dimen name="space_sm">12dp</dimen>
     <dimen name="space_md">16dp</dimen>
     <dimen name="space_lg">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="card_corner">20dp</dimen>
+    <dimen name="card_corner_sm">14dp</dimen>
+    <dimen name="card_elevation">6dp</dimen>
+    <dimen name="button_corner">14dp</dimen>
     <dimen name="touch_target_min">48dp</dimen>
 </resources>

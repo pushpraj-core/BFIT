@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     tools:context=".ChatActivity">
 
     <!-- Toolbar with back + history button -->
@@ -31,6 +32,7 @@
             android:layout_weight="1"
             android:text="@string/chat_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold"
             android:paddingStart="4dp"
             android:paddingEnd="8dp" />
 
@@ -53,15 +55,15 @@
         android:layout_above="@+id/inputLayout"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp">
+        android:padding="@dimen/space_xl">
 
         <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_baseline_chat_24"
             app:tint="?attr/colorPrimary"
-            android:alpha="0.5"
-            android:layout_marginBottom="16dp"
+            android:alpha="0.4"
+            android:layout_marginBottom="@dimen/space_md"
             android:contentDescription="Chat" />
 
         <TextView
@@ -70,7 +72,8 @@
             android:text="@string/chat_empty_state"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurfaceVariant"
-            android:gravity="center" />
+            android:gravity="center"
+            android:lineSpacingExtra="4dp" />
 
     </LinearLayout>
 
@@ -81,7 +84,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarLayout"
         android:layout_above="@+id/inputLayout"
-        android:padding="8dp"
+        android:padding="@dimen/space_sm"
         android:clipToPadding="false"
         android:visibility="gone"
         tools:visibility="visible"
@@ -97,6 +100,7 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
+    <!-- Input bar with glass style -->
     <LinearLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
@@ -104,8 +108,9 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:elevation="4dp"
+        android:paddingHorizontal="@dimen/space_sm"
+        android:paddingVertical="@dimen/space_xs"
+        android:elevation="6dp"
         android:background="?attr/colorSurfaceContainer">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -127,7 +132,7 @@
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/space_xs"
             android:contentDescription="Send"
             app:icon="@android:drawable/ic_menu_send" />
     </LinearLayout>

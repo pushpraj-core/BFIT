@@ -4,22 +4,23 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <!-- Barbell -->
+    <!-- Barbell bar -->
     <path
-        android:fillColor="#8E24AA"
+        android:fillColor="#7C5CFC"
         android:pathData="M21,9H3V7h18v2z" />
+    <!-- Barbell weights -->
     <path
-        android:fillColor="#D81B60"
+        android:fillColor="#00D4AA"
         android:pathData="M4,10a2,2 0 0,0 -2,2v0a2,2 0 0,0 2,2h2V10H4z M18,10h-2v4h2a2,2 0 0,0 2,-2v0a2,2 0 0,0 -2,-2z" />
 
-    <!-- Person's Body (V-Shape) -->
+    <!-- Person's Body -->
     <path
-        android:fillColor="#FB8C00"
+        android:fillColor="#FF6B35"
         android:pathData="M12,12c-2.21,0 -4,1.79 -4,4v7h8v-7c0,-2.21 -1.79,-4 -4,-4z" />
 
     <!-- Person's Head -->
     <path
-        android:fillColor="#FFC107"
+        android:fillColor="#FBBF24"
         android:pathData="M12,7m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
 
 </vector>

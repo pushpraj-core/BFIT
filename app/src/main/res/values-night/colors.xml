@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark mode overrides for colors that break in dark theme -->
-    <color name="bfit_chart_grid">#333333</color>
-    <color name="bfit_chart_text">#C0C0C0</color>
-    <color name="bfit_on_surface">#F3F4F6</color>
-    <color name="bfit_surface_soft">#1E1E1E</color>
+    <!-- Dark mode overrides -->
+    <color name="bfit_primary">#9B85FF</color>
+    <color name="bfit_primary_dark">#7C5CFC</color>
+    <color name="bfit_primary_container">#1E1640</color>
+    <color name="bfit_secondary">#00F5D4</color>
+    <color name="bfit_secondary_container">#0A3D30</color>
+    <color name="bfit_accent">#FF8A5C</color>
+    <color name="bfit_success">#34D399</color>
+    <color name="bfit_warning">#FBBF24</color>
+    <color name="bfit_danger">#F87171</color>
+    <color name="bfit_info">#60A5FA</color>
+
+    <color name="bfit_surface_soft">#111827</color>
+    <color name="bfit_on_surface">#F1F5F9</color>
+
+    <color name="bfit_chart_grid">#1E293B</color>
+    <color name="bfit_chart_text">#94A3B8</color>
+
+    <color name="bfit_glow_overlay">#337C5CFC</color>
 </resources>

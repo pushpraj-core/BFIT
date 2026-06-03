@@ -3,20 +3,30 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- BFIT Brand Color Palette -->
-    <color name="bfit_primary">#6C3CE0</color>
-    <color name="bfit_primary_dark">#5028B8</color>
-    <color name="bfit_primary_container">#EADDFF</color>
-    <color name="bfit_secondary">#E91E63</color>
-    <color name="bfit_secondary_container">#FFD8E4</color>
-    <color name="bfit_accent">#FF6D00</color>
-    <color name="bfit_success">#00C853</color>
+    <!-- BFIT Premium Brand Palette -->
+    <color name="bfit_primary">#7C5CFC</color>
+    <color name="bfit_primary_dark">#5A3FD4</color>
+    <color name="bfit_primary_container">#EDE7FF</color>
+    <color name="bfit_secondary">#00D4AA</color>
+    <color name="bfit_secondary_container">#D6FFF3</color>
+    <color name="bfit_accent">#FF6B35</color>
+    <color name="bfit_success">#10B981</color>
     <color name="bfit_warning">#F59E0B</color>
     <color name="bfit_danger">#EF4444</color>
-    <color name="bfit_info">#0EA5E9</color>
-    <color name="bfit_chart_grid">#E5E7EB</color>
-    <color name="bfit_chart_text">#444444</color>
-    <color name="bfit_surface_soft">#F8FAFC</color>
+    <color name="bfit_info">#3B82F6</color>
+
+    <!-- Surfaces -->
+    <color name="bfit_surface_soft">#F1F5F9</color>
     <color name="bfit_surface_dark">#1C1B1F</color>
-    <color name="bfit_on_surface">#1C1B1F</color>
+    <color name="bfit_on_surface">#0F172A</color>
+
+    <!-- Chart -->
+    <color name="bfit_chart_grid">#E2E8F0</color>
+    <color name="bfit_chart_text">#334155</color>
+
+    <!-- Gradients -->
+    <color name="bfit_gradient_start">#7C5CFC</color>
+    <color name="bfit_gradient_mid">#5B6CF0</color>
+    <color name="bfit_gradient_end">#00D4AA</color>
+    <color name="bfit_glow_overlay">#227C5CFC</color>
 </resources>

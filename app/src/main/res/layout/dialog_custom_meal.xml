@@ -4,15 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/space_xl"
+    android:background="@drawable/bg_card_glass">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Custom Meal"
         android:textAppearance="?attr/textAppearanceTitleLarge"
-        android:textColor="?attr/colorPrimary"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/space_md" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -72,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="@dimen/space_md">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -112,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Meal Type"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_marginBottom="8dp" />
 
@@ -120,7 +121,7 @@
         android:id="@+id/mealTypeChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/space_md"
         app:singleSelection="true"
         app:selectionRequired="true">
 
@@ -160,7 +161,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quick Add"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:layout_marginBottom="8dp" />
 
@@ -168,7 +169,7 @@
         android:id="@+id/quickAddChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/space_md"
         app:singleSelection="false">
 
         <com.google.android.material.chip.Chip
@@ -210,11 +211,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addMealButton"
+        style="@style/Widget.BFIT.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add to Today's Log"
-        android:padding="12dp"
-        app:cornerRadius="12dp"
         app:icon="@drawable/ic_baseline_restaurant_24"
         app:iconGravity="textStart" />
 

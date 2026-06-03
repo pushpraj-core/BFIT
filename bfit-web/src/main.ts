@@ -1,60 +1,56 @@
 import './style.css'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src=${viteLogo} class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+  <header>
+    <div class="logo">
+      BFIT <div class="logo-dot"></div>
+    </div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#download">Download</a>
+    </nav>
+    <button class="btn btn-secondary">Sign In</button>
+  </header>
 
-<div class="ticks"></div>
+  <main>
+    <div class="animate-slide-up delay-100">
+      <h1>The Future of <br/><span class="text-gradient">Personal Fitness</span></h1>
+    </div>
+    
+    <p class="subtitle animate-slide-up delay-200">
+      Experience a handcrafted, intelligent fitness companion. Track meals with AI, log workouts seamlessly, and achieve your goals with a stunning, premium interface.
+    </p>
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src=${viteLogo} alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;" class="animate-slide-up delay-300">
+      <button class="btn">Get Started</button>
+      <button class="btn btn-secondary">Learn More</button>
+    </div>
 
-<div class="ticks"></div>
-<section id="spacer"></section>
+    <div class="features">
+      <div class="glass-card animate-slide-up delay-400">
+        <div class="feature-icon icon-purple">🤖</div>
+        <h3>AI Meal Recognition</h3>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6;">
+          Snap a photo of your food and let our advanced AI instantly identify calories and macros. Say goodbye to manual logging.
+        </p>
+      </div>
+
+      <div class="glass-card animate-slide-up delay-500">
+        <div class="feature-icon icon-cyan">📊</div>
+        <h3>Smart Analytics</h3>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6;">
+          Visualize your progress with beautiful, intuitive charts. Monitor weight trends, daily adherence, and macro breakdowns.
+        </p>
+      </div>
+
+      <div class="glass-card animate-slide-up delay-600">
+        <div class="feature-icon icon-pink">⚡</div>
+        <h3>Personalized Plans</h3>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6;">
+          Customized workout and diet plans tailored to your specific body type, goals, and dietary preferences.
+        </p>
+      </div>
+    </div>
+  </main>
 `
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)

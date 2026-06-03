@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="?attr/colorSurfaceContainer">
+        android:background="?attr/colorSurface">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="@dimen/space_md"
             android:paddingBottom="100dp"
             android:clipToPadding="false"
             android:gravity="center_horizontal">
@@ -25,7 +25,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/space_md">
 
                 <!-- Hidden scan button — kept for backward compat, use scanDashBtn instead -->
                 <com.google.android.material.button.MaterialButton
@@ -37,12 +37,12 @@
                     android:layout_centerVertical="true"
                     android:visibility="gone"
                     android:contentDescription="@string/scan_food"
-                    app:cornerRadius="16dp"
+                    app:cornerRadius="@dimen/button_corner"
                     app:icon="@drawable/ic_baseline_qr_code_scanner_24" />
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_bfit_logo"
                     android:contentDescription="@string/app_logo_content_description" />
@@ -53,9 +53,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
+                    android:textColor="@color/bfit_accent"
                     tools:text="🔥 5 day streak" />
 
             </RelativeLayout>
@@ -63,9 +64,10 @@
             <TextView
                 android:id="@+id/headerTitle"
                 android:text="@string/fitness_calorie_planner"
-                android:textSize="28sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="24dp"
+                android:letterSpacing="-0.02"
+                android:layout_marginBottom="@dimen/space_lg"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,23 +80,22 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="20dp">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/ageInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="@dimen/space_md"
                             app:startIconDrawable="@drawable/ic_baseline_person_24"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
@@ -111,7 +112,7 @@
                             android:id="@+id/heightInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="@dimen/space_md"
                             app:startIconDrawable="@drawable/ic_baseline_height_24"
                             app:endIconMode="custom"
                             app:endIconDrawable="@drawable/ic_baseline_swap_horiz_24"
@@ -144,24 +145,23 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="@dimen/space_lg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="20dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/gender"
                             android:layout_marginBottom="8dp"
-                            android:textSize="16sp"
+                            android:textSize="15sp"
                             android:textColor="?attr/colorOnSurface" />
 
                         <RadioGroup
@@ -169,7 +169,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="16dp">
+                            android:layout_marginBottom="@dimen/space_md">
 
                             <RadioButton
                                 android:id="@+id/maleRadio"
@@ -182,7 +182,7 @@
                                 android:id="@+id/femaleRadio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
+                                android:layout_marginStart="@dimen/space_md"
                                 android:text="@string/female" />
                         </RadioGroup>
 
@@ -190,7 +190,7 @@
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="@dimen/space_md"
                             android:hint="@string/dietary_preference"
                             app:startIconDrawable="@drawable/ic_baseline_restaurant_24">
 
@@ -205,7 +205,7 @@
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="@dimen/space_md"
                             android:hint="@string/body_goal"
                             app:startIconDrawable="@drawable/ic_baseline_flag_24">
 
@@ -221,7 +221,7 @@
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="@dimen/space_md"
                             app:startIconDrawable="@drawable/ic_baseline_warning_24">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -244,8 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/generate_plan"
-                    android:padding="16dp"
-                    app:cornerRadius="16dp"/>
+                    android:padding="14dp"
+                    app:cornerRadius="@dimen/button_corner" />
             </LinearLayout>
 
             <!-- ═══════════ Dashboard View ═══════════ -->
@@ -255,6 +255,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:animateLayoutChanges="true"
+                android:layoutAnimation="@anim/layout_stagger_animation"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -264,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <TextView
                         android:id="@+id/welcomeText"
@@ -272,7 +273,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAppearance="?attr/textAppearanceTitleLarge"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         tools:text="Welcome, Pushp!" />
 
                     <com.google.android.material.button.MaterialButton
@@ -288,13 +290,12 @@
                 <!-- BMI Result Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/bmiCard"
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="2dp"
                     app:strokeColor="?attr/colorPrimary"
                     app:strokeWidth="1dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/space_md"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -302,14 +303,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp"
+                        android:padding="@dimen/space_md"
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:src="@drawable/ic_baseline_monitor_weight_24"
-                            android:layout_marginEnd="12dp"
+                            android:layout_marginEnd="@dimen/space_sm"
                             app:tint="?attr/colorPrimary"
                             android:contentDescription="BMI" />
 
@@ -350,24 +351,24 @@
 
                 <!-- Daily Summary Card -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="20dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/daily_summary"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:layout_marginBottom="16dp" />
+                            android:textStyle="bold"
+                            android:layout_marginBottom="@dimen/space_md" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -378,7 +379,7 @@
                             <RelativeLayout
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:layout_marginEnd="16dp">
+                                android:layout_marginEnd="@dimen/space_md">
 
                                 <com.google.android.material.progressindicator.CircularProgressIndicator
                                     android:id="@+id/calorieProgressIndicator"
@@ -418,7 +419,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/protein"
                                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                                    android:layout_marginTop="8dp"/>
+                                    android:layout_marginTop="@dimen/space_xs" />
 
                                 <com.google.android.material.progressindicator.LinearProgressIndicator
                                     android:id="@+id/proteinProgressIndicator"
@@ -434,6 +435,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
+                                    android:textAppearance="?attr/textAppearanceBodySmall"
                                     tools:text="90 / 120 g" />
 
                             </LinearLayout>
@@ -441,26 +443,26 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Today's Meals Card (no exercise) -->
+                <!-- Today's Meals Card -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="@dimen/space_md">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="20dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/todays_plan"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:layout_marginBottom="8dp"/>
+                            android:textStyle="bold"
+                            android:layout_marginBottom="@dimen/space_xs"/>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/dailyPlanRecyclerView"
@@ -473,14 +475,13 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Today's Exercise Card (separate!) -->
+                <!-- Today's Exercise Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/exerciseCard"
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/space_md"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -488,28 +489,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
+                            android:layout_marginBottom="@dimen/space_xs">
 
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_baseline_fitness_center_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginEnd="8dp"
+                                app:tint="@color/bfit_secondary"
+                                android:layout_marginEnd="@dimen/space_xs"
                                 android:contentDescription="Exercise" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Today's Workout"
-                                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -523,7 +525,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- ═══ Feature Grid — Icons on top, short labels ═══ -->
+                <!-- ═══ Feature Grid ═══ -->
 
                 <!-- Row 1: Nutrition Features -->
                 <TextView
@@ -532,23 +534,23 @@
                     android:text="Nutrition"
                     android:textAppearance="?attr/textAppearanceLabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/space_xs"
+                    android:layout_marginTop="@dimen/space_xs"
                     android:layout_marginStart="4dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="@dimen/space_sm">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/viewPlanCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -558,14 +560,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_restaurant_24"
                                 app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Plan" />
 
                             <TextView
@@ -579,12 +581,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/groceryCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginHorizontal="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -594,14 +595,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_flag_24"
                                 app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Groceries" />
 
                             <TextView
@@ -615,12 +616,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/scanCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -630,14 +630,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_qr_code_scanner_24"
                                 app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Scan" />
 
                             <TextView
@@ -658,23 +658,22 @@
                     android:text="Tracking"
                     android:textAppearance="?attr/textAppearanceLabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/space_xs"
                     android:layout_marginStart="4dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="@dimen/space_sm">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/reportCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -684,14 +683,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_assessment_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                app:tint="@color/bfit_secondary"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Report" />
 
                             <TextView
@@ -705,12 +704,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/weightCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginHorizontal="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -720,14 +718,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_trending_up_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                app:tint="@color/bfit_secondary"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Weight" />
 
                             <TextView
@@ -741,12 +739,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/storeCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -756,14 +753,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_fitness_center_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                app:tint="@color/bfit_secondary"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Store" />
 
                             <TextView
@@ -784,23 +781,22 @@
                     android:text="More"
                     android:textAppearance="?attr/textAppearanceLabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/space_xs"
                     android:layout_marginStart="4dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="@dimen/space_sm">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/progressCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -810,14 +806,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_trending_up_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                app:tint="@color/bfit_accent"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="Progress" />
 
                             <TextView
@@ -831,12 +827,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/aiMealCard"
+                        style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
                         android:clickable="true"
                         android:focusable="true"
                         app:rippleColor="?attr/colorPrimary">
@@ -846,14 +841,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="center"
-                            android:padding="16dp">
+                            android:padding="@dimen/space_md">
 
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:src="@drawable/ic_baseline_camera_alt_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="8dp"
+                                app:tint="@color/bfit_accent"
+                                android:layout_marginBottom="@dimen/space_xs"
                                 android:contentDescription="AI Meal" />
 
                             <TextView
@@ -867,7 +862,7 @@
 
                 </LinearLayout>
 
-                <!-- Logout — standalone, clean -->
+                <!-- Logout -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/logoutBtn"
                     style="@style/Widget.Material3.Button.TextButton"
@@ -875,6 +870,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/logout"
                     android:textColor="?attr/colorOnSurfaceVariant"
+                    android:layout_marginTop="@dimen/space_md"
                     android:layout_marginBottom="72dp" />
 
             </LinearLayout>
@@ -887,7 +883,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:orientation="vertical"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/space_md"
         android:gravity="center_horizontal">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -895,7 +891,7 @@
             style="@style/Widget.Material3.FloatingActionButton.Small.Secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="@dimen/space_sm"
             android:contentDescription="Add Custom Meal"
             app:srcCompat="@drawable/ic_baseline_restaurant_24" />
 

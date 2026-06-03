@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/space_xl"
+    android:background="@drawable/bg_card_glass">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="⚖️ Log Your Weight"
         android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -40,11 +42,10 @@
     <!-- Current BMI display -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/currentBmiCard"
+        style="@style/Widget.BFIT.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
         android:layout_marginBottom="16dp">
 
         <LinearLayout
@@ -91,9 +92,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveWeightButton"
+        style="@style/Widget.BFIT.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Weight"
-        app:cornerRadius="12dp" />
+        android:text="Save Weight" />
 
 </LinearLayout>

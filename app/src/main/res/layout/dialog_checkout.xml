@@ -4,29 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/space_xl"
+    android:background="@drawable/bg_card_glass">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Order Summary"
         android:textAppearance="?attr/textAppearanceTitleLarge"
-        android:textColor="?attr/colorPrimary"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/space_md" />
 
     <!-- Product Info -->
     <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.BFIT.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
-        android:layout_marginBottom="16dp">
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+        android:layout_marginBottom="@dimen/space_md">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/space_md">
 
             <TextView
                 android:id="@+id/checkoutProductName"
@@ -95,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="@dimen/space_md">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -135,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="FREE"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="@color/bfit_success"
                 android:textStyle="bold"
                 android:textAppearance="?attr/textAppearanceBodyMedium" />
         </LinearLayout>
@@ -163,7 +164,7 @@
                 android:id="@+id/totalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textStyle="bold"
                 android:textColor="?attr/colorPrimary" />
         </LinearLayout>
@@ -172,11 +173,11 @@
     <!-- Place Order Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/placeOrderBtn"
+        style="@style/Widget.BFIT.ActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Place Order"
         android:padding="16dp"
-        app:cornerRadius="16dp"
         app:icon="@drawable/ic_baseline_fitness_center_24"
         app:iconGravity="textStart" />
 

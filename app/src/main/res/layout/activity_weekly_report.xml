@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorSurfaceContainer"
+    android:background="?attr/colorSurface"
     tools:context=".WeeklyReportActivity">
 
     <!-- Toolbar -->
@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8dp"
+        android:padding="@dimen/space_xs"
         android:elevation="4dp"
-        android:background="?attr/colorSurface">
+        android:background="?attr/colorSurfaceContainer">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/backButton"
@@ -32,8 +32,9 @@
             android:layout_weight="1"
             android:text="@string/weekly_report_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold"
             android:paddingStart="4dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="@dimen/space_xs" />
 
     </LinearLayout>
 
@@ -46,17 +47,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:paddingBottom="32dp"
+            android:padding="@dimen/space_md"
+            android:paddingBottom="@dimen/space_xl"
             android:clipToPadding="false">
 
-            <!-- ═══ Summary Stats Card ═══ -->
+            <!-- Summary Stats Card -->
             <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.BFIT.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/space_md">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginVertical="16dp"
+                        android:layout_marginVertical="@dimen/space_md"
                         android:background="?attr/colorOutlineVariant" />
 
                     <LinearLayout
@@ -217,15 +217,12 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
-
-            <!-- ═══ Calorie Bar Chart Card (Custom Canvas) ═══ -->
+            <!-- Calorie Bar Chart Card -->
             <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.BFIT.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/space_md">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -239,7 +236,7 @@
                         android:text="📈 Daily Calorie Intake"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textStyle="bold"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="@dimen/space_xs" />
 
                     <com.pushprajcore.bfit.charts.CalorieBarChartView
                         android:id="@+id/calorieBarChart"
@@ -251,14 +248,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="@dimen/space_sm"
                         android:gravity="center">
 
-                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="#00C853" android:layout_marginEnd="4dp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="On target" android:textSize="11sp" android:layout_marginEnd="16dp" />
-                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="#FF9800" android:layout_marginEnd="4dp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Over" android:textSize="11sp" android:layout_marginEnd="16dp" />
-                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="#FF5252" android:layout_marginEnd="4dp" />
+                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/bfit_success" android:layout_marginEnd="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="On target" android:textSize="11sp" android:layout_marginEnd="@dimen/space_md" />
+                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/bfit_warning" android:layout_marginEnd="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Over" android:textSize="11sp" android:layout_marginEnd="@dimen/space_md" />
+                        <View android:layout_width="12dp" android:layout_height="12dp" android:background="@color/bfit_danger" android:layout_marginEnd="4dp" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Under" android:textSize="11sp" />
 
                     </LinearLayout>
@@ -266,14 +263,13 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ═══ Weight Trend Line Chart Card ═══ -->
+            <!-- Weight Trend Line Chart Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/weightTrendCard"
+                style="@style/Widget.BFIT.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/space_md"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -315,15 +311,14 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ═══ Insights Card ═══ -->
+            <!-- Insights Card -->
             <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.BFIT.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
                 app:strokeColor="?attr/colorPrimary"
                 app:strokeWidth="1dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="@dimen/space_md">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -337,7 +332,7 @@
                         android:text="💡 Weekly Insights"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
+                        android:layout_marginBottom="@dimen/space_sm" />
 
                     <TextView
                         android:id="@+id/insightsText"

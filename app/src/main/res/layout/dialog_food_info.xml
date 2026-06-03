@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/space_xl"
+    android:background="@drawable/bg_card_glass">
 
     <TextView
         android:id="@+id/productNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
         android:textStyle="bold"
         android:textColor="?attr/colorOnSurface"
         tools:text="Product Name" />
@@ -20,26 +21,26 @@
         android:id="@+id/caloriesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="18sp"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textColor="?attr/colorPrimary"
         tools:text="250 kcal per 100g" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/space_md"
+        android:layout_marginBottom="@dimen/space_md"
         android:background="?attr/colorOutline" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Macros (per 100g)"
-        android:textSize="16sp"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textStyle="bold"
         android:textColor="?attr/colorOnSurface"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="@dimen/space_sm" />
 
     <!-- Protein -->
     <LinearLayout
@@ -47,20 +48,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="@dimen/space_xs">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Protein"
-            android:textSize="14sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <TextView
             android:id="@+id/proteinText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textStyle="bold"
             tools:text="25g" />
 
@@ -70,8 +71,8 @@
         android:id="@+id/proteinProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:indicatorColor="?attr/colorPrimary"
+        android:layout_marginBottom="@dimen/space_sm"
+        app:indicatorColor="@color/bfit_success"
         app:trackCornerRadius="4dp"
         tools:progress="50" />
 
@@ -81,20 +82,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="@dimen/space_xs">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Carbohydrates"
-            android:textSize="14sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <TextView
             android:id="@+id/carbsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textStyle="bold"
             tools:text="30g" />
 
@@ -104,8 +105,8 @@
         android:id="@+id/carbsProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:indicatorColor="@android:color/holo_orange_dark"
+        android:layout_marginBottom="@dimen/space_sm"
+        app:indicatorColor="@color/bfit_warning"
         app:trackCornerRadius="4dp"
         tools:progress="30" />
 
@@ -115,20 +116,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="@dimen/space_xs">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Fats"
-            android:textSize="14sp" />
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         <TextView
             android:id="@+id/fatsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textStyle="bold"
             tools:text="15g" />
 
@@ -138,7 +139,7 @@
         android:id="@+id/fatsProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:indicatorColor="@android:color/holo_red_light"
+        app:indicatorColor="@color/bfit_danger"
         app:trackCornerRadius="4dp"
         tools:progress="20" />
 

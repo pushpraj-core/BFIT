@@ -26,6 +26,7 @@ import com.pushprajcore.bfit.database.FirestoreRepository
 import com.pushprajcore.bfit.database.PlanRepository
 import com.pushprajcore.bfit.network.NetworkUtils
 import com.pushprajcore.bfit.network.RetrofitInstance
+import android.view.animation.AnimationUtils
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -225,6 +226,8 @@ class MainActivity : AppCompatActivity() {
         streakText = findViewById(R.id.streakText)
 
         dashboardView.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        // Set up staggered entrance
+        dashboardView.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_stagger_animation)
 
         val ageInput = inputForm.findViewById<EditText>(R.id.ageInput)
         val heightInput = inputForm.findViewById<TextInputEditText>(R.id.heightInput)
@@ -778,6 +781,7 @@ class MainActivity : AppCompatActivity() {
     private fun showDashboard() {
         inputForm.visibility = View.GONE
         dashboardView.visibility = View.VISIBLE
+        dashboardView.scheduleLayoutAnimation()
 
         // Show welcome message with user name
         val welcomeText = dashboardView.findViewById<TextView>(R.id.welcomeText)

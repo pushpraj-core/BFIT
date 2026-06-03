@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurface"
     tools:context=".PlannerActivity">
 
     <!-- Toolbar -->
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8dp"
+        android:padding="@dimen/space_xs"
         android:elevation="4dp"
         android:background="?attr/colorSurfaceContainer">
 
@@ -32,8 +33,9 @@
             android:layout_weight="1"
             android:text="@string/planner_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold"
             android:paddingStart="4dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="@dimen/space_xs" />
 
         <TextView
             android:id="@+id/streakText"
@@ -42,7 +44,7 @@
             android:text="🔥 0 Day Streak"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="@color/bfit_accent" />
 
     </LinearLayout>
 
@@ -50,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_md">
 
         <CalendarView
             android:id="@+id/calendarView"
@@ -66,7 +68,7 @@
             android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:gravity="center"
-            android:paddingTop="32dp"
+            android:paddingTop="@dimen/space_xl"
             android:visibility="gone"
             tools:visibility="gone" />
 
@@ -75,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_md"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/list_item_plan" />
 
@@ -83,10 +85,10 @@
             android:id="@+id/markDayCompleteBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_md"
             android:text="@string/mark_day_complete"
-            android:padding="12dp"
-            app:cornerRadius="12dp"
+            android:padding="@dimen/space_sm"
+            app:cornerRadius="@dimen/button_corner"
             app:icon="@drawable/ic_baseline_flag_24"
             app:iconGravity="textStart" />
 

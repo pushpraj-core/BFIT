@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurface"
     tools:context=".StoreActivity">
 
     <!-- Toolbar -->
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8dp"
+        android:padding="@dimen/space_xs"
         android:elevation="4dp"
         android:background="?attr/colorSurfaceContainer">
 
@@ -31,8 +32,9 @@
             android:layout_weight="1"
             android:text="@string/store_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold"
             android:paddingStart="4dp"
-            android:paddingEnd="8dp" />
+            android:paddingEnd="@dimen/space_xs" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/purchaseHistoryBtn"
@@ -47,14 +49,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_md">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/recommended_supplements"
             android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:layout_marginBottom="16dp" />
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/space_md" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/supplementsRecyclerView"
@@ -69,7 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="See Millions More on Amazon"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_md"
+            app:cornerRadius="@dimen/button_corner"
             app:icon="@android:drawable/ic_menu_search" />
 
     </LinearLayout>

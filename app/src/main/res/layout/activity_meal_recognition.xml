@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/mealToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="@string/meal_recognition_title" />
+        android:title="@string/meal_recognition_title"
+        android:background="?attr/colorSurfaceContainer"
+        app:titleTextAppearance="?attr/textAppearanceTitleLarge"
+        app:titleTextColor="?attr/colorOnSurface" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/space_sm">
+                    android:padding="@dimen/space_md">
 
                     <ImageView
                         android:id="@+id/mealImagePreview"
@@ -76,7 +80,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/retakeImageButton"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            style="@style/Widget.BFIT.PillButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/space_xs"
@@ -91,7 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_xs"
                         android:minHeight="@dimen/touch_target_min"
-                        android:text="@string/analyze_meal" />
+                        android:text="@string/analyze_meal"
+                        app:cornerRadius="@dimen/button_corner" />
 
                     <ProgressBar
                         android:id="@+id/analyzeProgress"
@@ -123,7 +128,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_sm"
                         android:text="@string/estimated_macros"
-                        android:textAppearance="?attr/textAppearanceTitleMedium" />
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" />
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -144,7 +150,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/macro_protein_placeholder"
-                            android:textColor="@color/bfit_success" />
+                            android:textColor="@color/bfit_success"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/carbsMacroText"
@@ -152,7 +159,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/macro_carbs_placeholder"
-                            android:textColor="@color/bfit_warning" />
+                            android:textColor="@color/bfit_warning"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/fatsMacroText"
@@ -160,7 +168,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/macro_fats_placeholder"
-                            android:textColor="@color/bfit_danger" />
+                            android:textColor="@color/bfit_danger"
+                            android:textStyle="bold" />
                         </LinearLayout>
                     </HorizontalScrollView>
 

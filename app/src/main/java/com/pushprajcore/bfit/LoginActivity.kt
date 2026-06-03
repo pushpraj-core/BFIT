@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import android.view.animation.AnimationUtils
 import com.pushprajcore.bfit.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -52,6 +53,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Premium Intro Animation
+        binding.root.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_fade_in))
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()

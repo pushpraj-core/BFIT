@@ -2,10 +2,10 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.BFIT.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     android:layout_marginBottom="12dp">
 
     <LinearLayout
@@ -25,7 +25,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_baseline_fitness_center_24"
-                app:tint="?attr/colorPrimary"
+                app:tint="@color/bfit_accent"
                 android:layout_marginEnd="12dp"
                 android:contentDescription="Supplement" />
 
@@ -60,12 +60,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buyButton"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.BFIT.PillButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:icon="@android:drawable/ic_menu_send"
             app:iconGravity="textStart"
-            app:cornerRadius="12dp"
             android:text="@string/buy_now" />
 
     </LinearLayout>
