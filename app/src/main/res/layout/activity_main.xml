@@ -475,56 +475,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Today's Exercise Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/exerciseCard"
-                    style="@style/Widget.BFIT.Card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/space_md"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/space_xs">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_baseline_fitness_center_24"
-                                app:tint="@color/bfit_secondary"
-                                android:layout_marginEnd="@dimen/space_xs"
-                                android:contentDescription="Exercise" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Today's Workout"
-                                android:textAppearance="?attr/textAppearanceTitleMedium"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/exerciseRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/list_item_plan"
-                            tools:itemCount="3"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
                 <!-- ═══ Feature Grid ═══ -->
 
                 <!-- Row 1: Nutrition Features -->
@@ -580,41 +530,6 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/groceryCard"
-                        style="@style/Widget.BFIT.Card"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginHorizontal="6dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:rippleColor="?attr/colorPrimary">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="@dimen/space_md">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_baseline_flag_24"
-                                app:tint="?attr/colorPrimary"
-                                android:layout_marginBottom="@dimen/space_xs"
-                                android:contentDescription="Groceries" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Groceries"
-                                android:textAppearance="?attr/textAppearanceLabelLarge"
-                                android:gravity="center" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/scanCard"
                         style="@style/Widget.BFIT.Card"
                         android:layout_width="0dp"
@@ -638,18 +553,20 @@
                                 android:src="@drawable/ic_baseline_qr_code_scanner_24"
                                 app:tint="?attr/colorPrimary"
                                 android:layout_marginBottom="@dimen/space_xs"
-                                android:contentDescription="Scan" />
+                                android:contentDescription="Scan &amp; AI" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Scan"
+                                android:text="Scan &amp; AI"
                                 android:textAppearance="?attr/textAppearanceLabelLarge"
                                 android:gravity="center" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
+
+
 
                 <!-- Row 2: Tracking Features -->
                 <TextView
@@ -774,93 +691,50 @@
 
                 </LinearLayout>
 
-                <!-- Row 3: More Features -->
-                <TextView
+                <!-- Progress Card (standalone, merged from 'More' section) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/progressCard"
+                    style="@style/Widget.BFIT.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="More"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:layout_marginBottom="@dimen/space_xs"
-                    android:layout_marginStart="4dp" />
+                    android:layout_marginBottom="@dimen/space_sm"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:rippleColor="?attr/colorPrimary">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/space_sm">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/progressCard"
-                        style="@style/Widget.BFIT.Card"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:rippleColor="?attr/colorPrimary">
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/space_md">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_baseline_trending_up_24"
+                            app:tint="@color/bfit_accent"
+                            android:layout_marginEnd="@dimen/space_sm"
+                            android:contentDescription="Progress" />
+
+                        <TextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="@dimen/space_md">
+                            android:layout_weight="1"
+                            android:text="Progress"
+                            android:textAppearance="?attr/textAppearanceLabelLarge" />
 
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_baseline_trending_up_24"
-                                app:tint="@color/bfit_accent"
-                                android:layout_marginBottom="@dimen/space_xs"
-                                android:contentDescription="Progress" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_baseline_assessment_24"
+                            app:tint="?attr/colorOnSurfaceVariant"
+                            android:contentDescription="View progress charts" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Progress"
-                                android:textAppearance="?attr/textAppearanceLabelLarge"
-                                android:gravity="center" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/aiMealCard"
-                        style="@style/Widget.BFIT.Card"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:rippleColor="?attr/colorPrimary">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="@dimen/space_md">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_baseline_camera_alt_24"
-                                app:tint="@color/bfit_accent"
-                                android:layout_marginBottom="@dimen/space_xs"
-                                android:contentDescription="AI Meal" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="AI Meal"
-                                android:textAppearance="?attr/textAppearanceLabelLarge"
-                                android:gravity="center" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
 
                 <!-- Logout -->
                 <com.google.android.material.button.MaterialButton

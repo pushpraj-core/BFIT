@@ -110,8 +110,8 @@ class MainActivity : AppCompatActivity() {
                 val response = RetrofitInstance.api.getFoodData(barcode)
                 val product = response.product
                 if (product != null) {
-                    val productName = product.productName ?: "Unknown Product"
-                    val calories = product.nutriments?.energyKcal100g ?: 0.0
+                    val productName = product.displayName()
+                    val calories = product.nutriments?.kcalPer100g() ?: 0.0
                     val protein = product.nutriments?.proteins_100g ?: 0.0
                     val carbs = product.nutriments?.carbohydrates_100g ?: 0.0
                     val fats = product.nutriments?.fat_100g ?: 0.0
@@ -233,9 +233,9 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
                 R.id.nav_profile -> {
-                    // Placeholder for future profile activity
-                    Toast.makeText(this, "Profile coming soon", Toast.LENGTH_SHORT).show()
-                    false
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    true
                 }
                 else -> false
             }
@@ -412,12 +412,7 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        // Feature card: AI Meal Recognition
-        dashboardView.findViewById<View>(R.id.aiMealCard).setOnClickListener {
-            val intent = Intent(this, MealRecognitionActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
+        // AI Meal card removed — Scanner already handles both barcode + AI camera
 
         fabChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
@@ -442,10 +437,11 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
 
-        // Profile button
+        // Profile button — launches ProfileActivity
         val profileBtn = dashboardView.findViewById<Button>(R.id.profileBtn)
         profileBtn.setOnClickListener {
-            showProfileDialog()
+            startActivity(Intent(this, ProfileActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         loadUserData()
@@ -705,6 +701,8 @@ class MainActivity : AppCompatActivity() {
             putString("plan", gson.toJson(plan))
             putFloat("bmi", currentBmi)
             putString("currentGoal", currentGoal)
+            putInt("plan_calories", plan.calories)
+            putInt("plan_protein", plan.totalProtein)
         }
     }
 
@@ -824,8 +822,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val dailyPlanRecyclerView = dashboardView.findViewById<RecyclerView>(R.id.dailyPlanRecyclerView)
-        val exerciseRecyclerView = dashboardView.findViewById<RecyclerView>(R.id.exerciseRecyclerView)
-        val exerciseCard = dashboardView.findViewById<MaterialCardView>(R.id.exerciseCard)
 
         currentPlan?.let { plan ->
             lifecycleScope.launch {
@@ -871,32 +867,7 @@ class MainActivity : AppCompatActivity() {
                     })
                 }
 
-                // ─── Exercise (separate card) ───
-                val exerciseItems = mutableListOf<PlanListItem>()
-                if (plan.exercises.isNotEmpty()) {
-                    exerciseItems.addAll(plan.exercises.split("\n").filter { it.isNotBlank() }
-                        .map { exerciseText ->
-                            PlanListItem.PlanItem(id = "$dayStart-EXERCISE-$exerciseText", type = ItemType.EXERCISE, text = exerciseText)
-                        })
-                }
-
-                // Show/hide exercise card
-                if (exerciseItems.isNotEmpty()) {
-                    exerciseCard.visibility = View.VISIBLE
-                    val finalExerciseItems = exerciseItems.map { item ->
-                        if (item is PlanListItem.PlanItem) {
-                            item.isCompleted = planRepository.isPlanItemComplete(item.id)
-                        }
-                        item
-                    }
-                    exerciseRecyclerView.adapter = PlanAdapter(finalExerciseItems) { item, isCompleted ->
-                        lifecycleScope.launch {
-                            planRepository.markPlanItemAsComplete(item.id, isCompleted, 0, 0)
-                        }
-                    }
-                } else {
-                    exerciseCard.visibility = View.GONE
-                }
+                // Exercise section removed from home — shown in Exercise tab instead
 
                 // Calculate totals from completed plan items + extra meals
                 var totalCalories = 0
@@ -929,26 +900,66 @@ class MainActivity : AppCompatActivity() {
                 dailyPlanRecyclerView.adapter = PlanAdapter(finalPlanItems) { item, isCompleted ->
                     val kcalRegex = "(\\d+)\\s*kcal".toRegex()
                     val proteinRegex = "(\\d+)\\s*g".toRegex()
-                    val calories = kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
-                    val protein = proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
                     lifecycleScope.launch {
-                        planRepository.markPlanItemAsComplete(item.id, isCompleted, calories, protein)
+                        // Mark completion state only — pass 0 calories to skip the
+                        // additive internal tracking (we recompute from scratch below)
+                        planRepository.markPlanItemAsComplete(item.id, isCompleted, 0, 0)
                         if (isCompleted) {
                             planRepository.markDayAsComplete(dayStart)
                         }
-                        updateDashboardCalories()
+
+                        // Recompute total from ALL items by checking each one fresh from DB
+                        var recomputedCalories = 0
+                        var recomputedProtein = 0
+                        for (planItem in finalPlanItems) {
+                            if (planItem is PlanListItem.PlanItem) {
+                                val done = planRepository.isPlanItemComplete(planItem.id)
+                                if (done) {
+                                    recomputedCalories += kcalRegex.find(planItem.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                                    recomputedProtein += proteinRegex.find(planItem.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                                }
+                            }
+                        }
+
+                        // Write the ground-truth total to the DB
+                        planRepository.updateDailyLog(dayStart, recomputedCalories, recomputedProtein)
+
+                        // Update UI directly with the values we already have — no extra DB read
+                        updateDashboardCaloriesDirect(recomputedCalories, recomputedProtein)
                         updateStreak()
 
                         // Sync to Firestore
-                        val log = planRepository.getDailyLog(dayStart)
-                        firestoreRepository.saveDailyLog(
-                            dayStart,
-                            log?.totalCalories ?: 0,
-                            log?.totalProtein ?: 0
-                        )
+                        firestoreRepository.saveDailyLog(dayStart, recomputedCalories, recomputedProtein)
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Updates the calorie ring and protein bar directly from pre-computed values,
+     * avoiding an extra DB read and the race condition it causes.
+     */
+    private fun updateDashboardCaloriesDirect(caloriesConsumed: Int, proteinConsumed: Int) {
+        val dailyCaloriesText = dashboardView.findViewById<TextView>(R.id.dailyCaloriesText)
+        val calorieProgressIndicator = dashboardView.findViewById<CircularProgressIndicator>(R.id.calorieProgressIndicator)
+        val calorieProgressText = dashboardView.findViewById<TextView>(R.id.calorieProgressText)
+        val proteinProgressIndicator = dashboardView.findViewById<LinearProgressIndicator>(R.id.proteinProgressIndicator)
+        val proteinProgressText = dashboardView.findViewById<TextView>(R.id.proteinProgressText)
+
+        val totalCalories = currentPlan?.calories ?: 0
+        val totalProtein = currentPlan?.totalProtein ?: 0
+
+        dailyCaloriesText?.text = getString(R.string.calories_consumed_format, caloriesConsumed, totalCalories)
+        calorieProgressText?.text = getString(R.string.calorie_progress_format, caloriesConsumed)
+
+        if (totalCalories > 0) {
+            calorieProgressIndicator?.progress = ((caloriesConsumed * 100) / totalCalories).coerceAtMost(100)
+        }
+
+        proteinProgressText?.text = getString(R.string.protein_consumed_format, proteinConsumed, totalProtein)
+        if (totalProtein > 0) {
+            proteinProgressIndicator?.progress = ((proteinConsumed * 100) / totalProtein).coerceAtMost(100)
         }
     }
 

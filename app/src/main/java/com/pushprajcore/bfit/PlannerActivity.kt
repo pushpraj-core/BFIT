@@ -1,13 +1,16 @@
 package com.pushprajcore.bfit
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pushprajcore.bfit.database.PlanRepository
 import com.pushprajcore.bfit.databinding.ActivityPlannerBinding
 import kotlinx.coroutines.launch
@@ -30,6 +33,10 @@ class PlannerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         planRepository = PlanRepository(this)
+        binding.planRecyclerView.layoutManager = LinearLayoutManager(this)
+        // Initialize with empty adapter to avoid 'no adapter attached' warnings
+        planAdapter = PlanAdapter(emptyList()) { _, _ -> }
+        binding.planRecyclerView.adapter = planAdapter
         setupBackNavigation()
 
         // Back button
@@ -42,7 +49,7 @@ class PlannerActivity : AppCompatActivity() {
         exerciseOnlyMode = intent.getBooleanExtra("openExerciseOnly", false)
 
         if (exerciseOnlyMode) {
-            binding.plannerTitleText.text = getString(R.string.exercise_focus_title)
+            binding.plannerTitleText.text = "Today's Workout"
         }
 
         if (planResult == null) {
@@ -136,9 +143,10 @@ class PlannerActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 for (item in planItems) {
                     if (item is PlanListItem.PlanItem) {
-                        val textParts = item.text.split(" ")
-                        val calories = textParts.findLast { it.contains("kcal") }?.filter { it.isDigit() }?.toIntOrNull() ?: 0
-                        val protein = textParts.findLast { it.contains("g") }?.filter { it.isDigit() }?.toIntOrNull() ?: 0
+                        val kcalRegex = "(\\d+)\\s*kcal".toRegex()
+                        val proteinRegex = "(\\d+)\\s*g".toRegex()
+                        val calories = kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                        val protein = proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
                         planRepository.markPlanItemAsComplete(item.id, true, calories, protein)
                     }
                 }
@@ -148,7 +156,7 @@ class PlannerActivity : AppCompatActivity() {
             Toast.makeText(this, "Day marked as complete! 🎉", Toast.LENGTH_SHORT).show()
             binding.markDayCompleteBtn.text = "Day Completed ✅"
             binding.markDayCompleteBtn.isEnabled = false
-            binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_success))
+            binding.markDayCompleteBtn.setBackgroundColor(resolveThemeColor(com.google.android.material.R.attr.colorTertiary))
         }
     }
 
@@ -213,7 +221,7 @@ class PlannerActivity : AppCompatActivity() {
             if (generatedPlan.isEmpty()) {
                 emptyStateText?.visibility = View.VISIBLE
                 emptyStateText?.text = if (exerciseOnlyMode) {
-                    getString(R.string.no_exercise_for_date)
+                    "No workout planned for this date"
                 } else {
                     getString(R.string.no_plan_for_date)
                 }
@@ -230,7 +238,7 @@ class PlannerActivity : AppCompatActivity() {
                 } else {
                     binding.markDayCompleteBtn.text = getString(R.string.mark_day_complete)
                     binding.markDayCompleteBtn.isEnabled = true
-                    binding.markDayCompleteBtn.setBackgroundColor(getColor(R.color.bfit_primary))
+                    binding.markDayCompleteBtn.setBackgroundColor(resolveThemeColor(com.google.android.material.R.attr.colorPrimary))
                 }
             }
 
@@ -242,9 +250,10 @@ class PlannerActivity : AppCompatActivity() {
             }
 
             planAdapter = PlanAdapter(finalPlanItems) { item, isCompleted ->
-                val textParts = item.text.split(" ")
-                val calories = textParts.findLast { it.contains("kcal") }?.filter { it.isDigit() }?.toIntOrNull() ?: 0
-                val protein = textParts.findLast { it.contains("g") }?.filter { it.isDigit() }?.toIntOrNull() ?: 0
+                val kcalRegex = "(\\d+)\\s*kcal".toRegex()
+                val proteinRegex = "(\\d+)\\s*g".toRegex()
+                val calories = kcalRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+                val protein = proteinRegex.find(item.text)?.groupValues?.get(1)?.toIntOrNull() ?: 0
                 lifecycleScope.launch {
                     planRepository.markPlanItemAsComplete(item.id, isCompleted, calories, protein)
                 }
@@ -260,5 +269,12 @@ class PlannerActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra(key) as? T
         }
+    }
+
+    /** Resolves a theme colour attribute to its actual colour int. */
+    private fun resolveThemeColor(attrRes: Int): Int {
+        val tv = TypedValue()
+        return if (theme.resolveAttribute(attrRes, tv, true)) tv.data
+        else Color.parseColor("#6750A4") // M3 primary fallback
     }
 }
