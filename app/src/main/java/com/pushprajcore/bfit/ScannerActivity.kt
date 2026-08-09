@@ -166,6 +166,9 @@ class ScannerActivity : AppCompatActivity() {
                 .addOnCompleteListener {
                     imageProxy.close()
                 }
+        } else {
+            // Must close proxy even when mediaImage is null to avoid freezing the camera feed
+            imageProxy.close()
         }
     }
 
@@ -190,7 +193,16 @@ class ScannerActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                    if (isFinishing || isDestroyed) return
+                    // Downsample to avoid OOM on mid/low-tier devices
+                    val options = BitmapFactory.Options().apply {
+                        inJustDecodeBounds = true
+                    }
+                    BitmapFactory.decodeFile(photoFile.absolutePath, options)
+                    val targetWidth = 1024
+                    options.inSampleSize = Math.max(1, options.outWidth / targetWidth)
+                    options.inJustDecodeBounds = false
+                    val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath, options)
                     if (bitmap != null) {
                         analyzeWithGemini(bitmap)
                     } else {
@@ -202,6 +214,7 @@ class ScannerActivity : AppCompatActivity() {
 
                 override fun onError(exception: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
+                    if (isFinishing || isDestroyed) return
                     loadingIndicator.visibility = View.GONE
                     captureButton.isEnabled = true
                     Toast.makeText(this@ScannerActivity, "Photo capture failed", Toast.LENGTH_SHORT).show()

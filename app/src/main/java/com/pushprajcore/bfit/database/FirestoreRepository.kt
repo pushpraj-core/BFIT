@@ -152,20 +152,21 @@ class FirestoreRepository {
                 .add(foodData)
                 .await()
 
-            // Also update the daily totals
-            val currentLog = getDailyLog(date)
-            val currentCalories = (currentLog?.get("totalCalories") as? Long)?.toInt() ?: 0
-            val currentProtein = (currentLog?.get("totalProtein") as? Long)?.toInt() ?: 0
-            val currentCarbs = (currentLog?.get("totalCarbs") as? Long)?.toInt() ?: 0
-            val currentFats = (currentLog?.get("totalFats") as? Long)?.toInt() ?: 0
-
-            saveDailyLog(
-                date,
-                currentCalories + calories,
-                currentProtein + protein,
-                currentCarbs + carbs,
-                currentFats + fats
-            )
+            // Atomically update the daily totals to prevent race conditions
+            val dailyLogRef = firestore.collection(USERS_COLLECTION)
+                .document(uid)
+                .collection("dailyLogs")
+                .document(date.toString())
+            dailyLogRef.set(
+                mapOf<String, Any>(
+                    "totalCalories" to com.google.firebase.firestore.FieldValue.increment(calories.toLong()),
+                    "totalProtein" to com.google.firebase.firestore.FieldValue.increment(protein.toLong()),
+                    "totalCarbs" to com.google.firebase.firestore.FieldValue.increment(carbs.toLong()),
+                    "totalFats" to com.google.firebase.firestore.FieldValue.increment(fats.toLong()),
+                    "date" to date
+                ),
+                com.google.firebase.firestore.SetOptions.merge()
+            ).await()
         } catch (e: Exception) {
             Log.e(TAG, "Error adding food to log", e)
         }
@@ -223,6 +224,7 @@ class FirestoreRepository {
                 .document(uid)
                 .collection(CHAT_HISTORY_COLLECTION)
                 .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .limit(500) // Limit to prevent OOM on power users
                 .get()
                 .await()
 

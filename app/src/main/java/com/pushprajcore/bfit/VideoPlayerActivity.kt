@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 
 class VideoPlayerActivity : AppCompatActivity() {
 
+    private var webView: WebView? = null
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_player)
 
-        val webView = findViewById<WebView>(R.id.webView)
+        webView = findViewById(R.id.webView)
         val closeBtn = findViewById<ImageButton>(R.id.closeBtn)
 
         closeBtn.setOnClickListener { finish() }
@@ -22,8 +24,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         val videoId = intent.getStringExtra("VIDEO_ID") ?: "dQw4w9WgXcQ"
 
         // Setup WebView for YouTube Embedded Player
-        webView.settings.javaScriptEnabled = true
-        webView.webChromeClient = WebChromeClient()
+        webView?.settings?.javaScriptEnabled = true
+        webView?.webChromeClient = WebChromeClient()
         
         val html = """
             <html>
@@ -38,6 +40,22 @@ class VideoPlayerActivity : AppCompatActivity() {
             </html>
         """.trimIndent()
 
-        webView.loadDataWithBaseURL("https://www.youtube.com", html, "text/html", "utf-8", null)
+        webView?.loadDataWithBaseURL("https://www.youtube.com", html, "text/html", "utf-8", null)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webView?.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webView?.onResume()
+    }
+
+    override fun onDestroy() {
+        webView?.destroy()
+        webView = null
+        super.onDestroy()
     }
 }

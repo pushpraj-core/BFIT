@@ -914,11 +914,7 @@ class MainActivity : AppCompatActivity() {
                     item
                 }
 
-                // Include extra meal items in the daily total
-                for (extra in extraItems) {
-                    totalCalories += extra.calories
-                    totalProtein += extra.protein
-                }
+                // Extra items are already included in mealItems and counted above when completed
 
                 // Only update if the calculated total differs from the stored value
                 val existingLog = planRepository.getDailyLog(dayStart)

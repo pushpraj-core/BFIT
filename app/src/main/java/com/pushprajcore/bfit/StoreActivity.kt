@@ -59,7 +59,11 @@ class StoreActivity : AppCompatActivity() {
         // See More Amazon Button
         findViewById<Button>(R.id.seeMoreAmazonBtn).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.amazon.com/s?k=fitness+supplements"))
-            startActivity(intent)
+            try {
+                startActivity(intent)
+            } catch (e: android.content.ActivityNotFoundException) {
+                Toast.makeText(this@StoreActivity, "No application found to open this link.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Try loading from Firestore first, fall back to defaults
@@ -83,7 +87,11 @@ class StoreActivity : AppCompatActivity() {
             supplementsRecyclerView.adapter = SupplementsAdapter(supplements) { supplement ->
                 if (supplement.url.isNotEmpty()) {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(supplement.url))
-                    startActivity(intent)
+                    try {
+                        startActivity(intent)
+                    } catch (e: android.content.ActivityNotFoundException) {
+                        Toast.makeText(this@StoreActivity, "No application found to open this link.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this@StoreActivity, "Product link coming soon!", Toast.LENGTH_SHORT).show()
                 }

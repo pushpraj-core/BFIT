@@ -63,6 +63,7 @@
         <activity
             android:name=".VideoPlayerActivity"
             android:exported="false"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.BFIT" />
             
     </application>

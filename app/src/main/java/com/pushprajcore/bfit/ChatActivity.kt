@@ -98,15 +98,14 @@ class ChatActivity : AppCompatActivity() {
                         binding.loadingIndicator.visibility = View.VISIBLE
                         binding.askButton.isEnabled = false
 
-                        // Save user message to Firestore
-                        firestoreRepository.saveChatMessage(question, isUser = true, sessionId)
-
                         val response = chat.sendMessage(question)
                         val responseText = response.text ?: "Sorry, I couldn't generate a response."
 
                         addMessage(responseText, isUser = false)
 
-                        // Save bot response to Firestore
+                        // Save both messages to Firestore AFTER successful response
+                        // This prevents consecutive "user" messages which crash the Gemini SDK
+                        firestoreRepository.saveChatMessage(question, isUser = true, sessionId)
                         firestoreRepository.saveChatMessage(responseText, isUser = false, sessionId)
 
                     } catch (e: Exception) {

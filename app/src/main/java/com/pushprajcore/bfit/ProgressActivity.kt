@@ -117,7 +117,7 @@ class ProgressActivity : AppCompatActivity() {
         }
 
         saveWeightButton.setOnClickListener {
-            val enteredWeight = weightInput.text?.toString()?.toFloatOrNull()
+            val enteredWeight = weightInput.text?.toString()?.replace(",", ".")?.toFloatOrNull()
             if (enteredWeight == null || enteredWeight <= 0f) {
                 Toast.makeText(this, "Enter a valid weight", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
